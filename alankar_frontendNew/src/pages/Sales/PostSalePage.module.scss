@@ -1,0 +1,206 @@
+.container {
+  margin-top: 40px;
+  padding: 24px;
+  background: #f8f9fa;
+  min-height: 100vh;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background: #fff;
+  padding: 20px 32px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #23272e;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.18s;
+  box-shadow: 0 2px 8px rgba(79,70,229,0.10);
+  &:hover {
+    background: #4338ca;
+    transform: translateY(-1px) scale(1.03);
+  }
+}
+.tableContainer {
+  background: #fff;
+  border-radius: 16px;
+  overflow: auto;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.09);
+}
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 700px;
+}
+.tableHeader {
+  background: #f3f4f6;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.th {
+  padding: 18px 10px;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  color: #718096;
+  text-transform: uppercase;
+  border-bottom: 2px solid #e5e7eb;
+  letter-spacing: 0.04em;
+  background: #f3f4f6;
+}
+.td {
+  padding: 18px 10px;
+  border-bottom: 1px solid #edeef1;
+  font-size: 15px;
+  color: #23272e;
+  background: #fff;
+  vertical-align: middle;
+  min-width: 100px;
+  &:last-child {
+    white-space: nowrap;
+  }
+}
+.actionButtons {
+  display: flex;
+  gap: 6px;
+}
+.actionButton {
+  padding: 6px;
+  border: none;
+  border-radius: 6px;
+  background: #f3f4f6;
+  color: #4b5563;
+  cursor: pointer;
+  transition: background 0.17s;
+  font-size: 16px;
+  &:hover {
+    background: #e5e7eb;
+    color: #1f2937;
+  }
+}
+.deleteButton:hover {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 101;
+  padding: 18px;
+}
+.modalBox {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.09);
+  padding: 0;
+  min-width: 350px;
+  max-width: 400px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: modalAppear 0.2s ease;
+}
+@keyframes modalAppear {
+  from { opacity: 0; transform: scale(0.96);}
+  to { opacity: 1; transform: scale(1);}
+}
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 24px 0 24px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 16px;
+  margin-bottom: 12px;
+}
+.closeButton {
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #f3f4f6;
+  color: #6b7280;
+  transition: all 0.2s ease;
+}
+.modalBody {
+  padding: 0 24px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.input {
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #fff;
+}
+.submitButton {
+  width: 100%;
+  padding: 14px;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+  margin-top: 8px;
+  &:hover { background: #4338ca; }
+}
+.loading {
+  padding: 32px;
+  text-align: center;
+  color: #666;
+}
+.error {
+  padding: 18px;
+  background: #fde8e8;
+  color: #b91c1c;
+  border-radius: 8px;
+  margin: 18px 0;
+  border: 1px solid #fecaca;
+}
+.mailButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: #38bdf8;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.17s;
+  &:hover { background: #0ea5e9; }
+  &:disabled { background: #bae6fd; color: #94a3b8; cursor: not-allowed; }
+}

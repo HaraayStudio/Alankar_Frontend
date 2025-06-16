@@ -1,6 +1,4 @@
-// -------------------------
 // src/api/presalesApi.js
-// -------------------------
 import axios from 'axios';
 import { BASE_URL } from './constants';
 const api = axios.create({
@@ -20,12 +18,12 @@ export const createPresale = (presale, isOldClient, token) =>
     headers: { Authorization: `Bearer ${token}` }
   });
 export const updatePresaleStatus = (srNumber, status, token) =>
-  api.put(`/presales/updatepresalestatus`, null, {
+  api.put('/presales/updatepresalestatus', null, {
     params: { srNumber, status },
     headers: { Authorization: `Bearer ${token}` }
   });
 export const deletePresale = (srNumber, token) =>
-  api.put(`/presales/deletepresale`, null, {
+  api.put('/presales/deletepresale', null, {
     params: { srNumber },
     headers: { Authorization: `Bearer ${token}` }
   });

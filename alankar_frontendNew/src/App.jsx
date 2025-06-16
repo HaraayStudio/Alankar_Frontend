@@ -13,6 +13,7 @@ import Projects from './pages/Dashboard/Projects.jsx';
 import AddProject from './pages/Projects/AddProject.jsx';
 import OngoingProjects from './pages/Projects/OngoingProjects.jsx';
 import ProjectHistory from './pages/Projects/ProjectHistory.jsx';
+import Clients from './pages/Clients/Clients.jsx';
 import AddClient from './pages/Clients/AddClient.jsx';
 import AllClients from './pages/Clients/AllClients.jsx';
 import Billing from './pages/Clients/Billing.jsx';
@@ -49,6 +50,7 @@ const AppRoutes = () => {
         <Route path="projects/new" element={<AddProject />} />
         <Route path="projects/ongoing" element={<OngoingProjects />} />
         <Route path="projects/history" element={<ProjectHistory />} />
+        <Route path="clients" element={<Clients />} />
         <Route path="clients/new" element={<AddClient />} />
         <Route path="clients/list" element={<AllClients />} />
         <Route path="clients/billing" element={<Billing />} />
