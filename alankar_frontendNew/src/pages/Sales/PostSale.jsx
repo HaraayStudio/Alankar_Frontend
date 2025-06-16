@@ -240,8 +240,10 @@ const PreSalesPage = () => {
     conclusion: '',
     existingClient: false
   });
+   const [authToken, setAuthToken] = useState(() => localStorage.getItem('token') || '');
+    const BEARER_TOKEN = authToken;
   // Mock Bearer Token - Replace with your actual token
-  const BEARER_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsInVzZXJJZCI6MSwiaWF0IjoxNzUwMDcwNTQ2LCJleHAiOjE3NTAxNTY5NDZ9.ykRZ8Pn6NrwxWE85APJn70hkjSplXNYDkC0HxOsxxNI';
+  // const BEARER_TOKEN = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsInVzZXJJZCI6MSwiaWF0IjoxNzUwMDcwNTQ2LCJleHAiOjE3NTAxNTY5NDZ9.ykRZ8Pn6NrwxWE85APJn70hkjSplXNYDkC0HxOsxxNI';
   const API_BASE_URL = 'http://localhost:8080/api';
   const apiHeaders = {
     'Authorization': `Bearer ${BEARER_TOKEN}`,
