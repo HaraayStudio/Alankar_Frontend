@@ -1,0 +1,24 @@
+// src/components/Profile/Profile.module.scss
+.profileContainer {
+  display: flex;
+  align-items: center;
+}
+.profileCircle {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: #e0e7ff;
+  color: #1e3a8a;
+  border: 3px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 16px;
+  margin-left: -12px;
+  box-shadow: 0 0 0 1px #d1d5db; // light outline for contrast
+}
+.countCircle {
+  background-color: #c7d2fe;
+  color: #111827;
+}

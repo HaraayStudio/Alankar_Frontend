@@ -27,25 +27,24 @@ export const DataProvider = ({ children }) => {
   }
 };
   // Add Project Function
-  const handleLoginAdmin = async (email, password) => {
-    setLoading(true);
-    try {
-      const response = await login(email, password);
-      if (response.data) {
-           localStorage.setItem('token', JSON.stringify({
-        accessToken,
-      }));
-        setUser(response.data.user);
-        setAuthToken(response.data.accessToken);
-        setLoading(false);
-        return true; 
-      }
-    } catch (error) {
-      console.error('Login failed', error);
-      setLoading(false);
-      return false; 
-    }
+const handleLoginAdmin = async (email, password) => {
+  setLoading(true);
+  try {
+    const response = await login(email, password);
+    const { accessToken, user } = response;
+    // ✅ Store token in localStorage
+    localStorage.setItem('token', accessToken); // ← Fix here
+    // ✅ Set user and auth token
+    setUser(user);
+    setAuthToken(accessToken);
+    setLoading(false);
+    return true;
+  } catch (error) {
+    console.error('Login failed', error);
+    setLoading(false);
+    return false;
   }
+};
  const handleGetAllOrders = async () => {
   if (!authToken) {
     console.warn("No auth token found!");
@@ -73,8 +72,8 @@ export const DataProvider = ({ children }) => {
     try {
       // Assuming you have a function to fetch clients
       const response = await getAllClients(authToken);
-      setClients(response.data);
-      console.log('Clients fetched successfully:', response.data);
+      setClients(response.data.data);
+      console.log('Clients fetched successfully:', response.data.data);
     } catch (error) {
       console.error('Error fetching clients', error);
     } finally {
@@ -85,6 +84,7 @@ export const DataProvider = ({ children }) => {
   useEffect(() => {
   if (authToken) {
     fetchAllData();
+    //  localStorage.setItem('token', accessToken); // No need to stringify a plain string
   }
 }, [authToken]);
   return (
