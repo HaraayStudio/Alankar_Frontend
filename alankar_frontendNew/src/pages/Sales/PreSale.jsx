@@ -212,6 +212,8 @@ const PreSalesPage = () => {
     personName: formData.personName,
     requirements: formData.requirements,
     status: formData.status,
+    clientType: formData.clientType,
+    printType: formData.printType,
     // `dateTime` can be set to now or another value; here we set it to current ISO time:
     dateTime: new Date().toISOString()
   };
@@ -220,6 +222,7 @@ const PreSalesPage = () => {
     payload.srNumber = selectedSrNumber;
   }
   // Call API
+  console.log("Submitting Presale Data:", payload);
   const success = await handleCreatePresale(payload, formData.clientCategory === "existing");
   if (success) {
     setFormData(defaultForm);
