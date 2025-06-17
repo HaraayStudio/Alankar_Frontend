@@ -197,7 +197,9 @@ const PreSalesPage = () => {
           address: formData.client.address
         }
     };
+    console.log(payload);
     const success = await handleCreatePresale(payload, formData.clientCategory === "existing");
+    console.log("Create Presale Success:", success);
     if (success) {
       setFormData(defaultForm);
       setShowModal(false);
@@ -432,7 +434,28 @@ const PreSalesPage = () => {
           </div>
         </div>
       )}
-      {/* Status Popup unchanged */}
+      {/* Status Popup */}
+      {showStatusPopup && (
+        <div className={styles.modalBackdrop} onClick={e => e.target === e.currentTarget && setShowStatusPopup(false)}>
+          <div className={styles.modalBox}>
+            <div className={styles.modalHeader}>
+              <span>Update Status</span>
+              <button className={styles.closeButton} onClick={() => setShowStatusPopup(false)}><X size={20} /></button>
+            </div>
+            <div className={styles.modalBody}>
+              <label>Status</label>
+              <select value={statusToUpdate} onChange={e => setStatusToUpdate(e.target.value)}>
+                <option value="PENDING">Pending</option>
+                <option value="ONBOARDED">Onboarded</option>
+                <option value="CREATED">Created</option>
+              </select>
+              <div className={styles.formActions}>
+                <button className={styles.submitBtn} onClick={handleStatusUpdateClick}>Update Status</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
