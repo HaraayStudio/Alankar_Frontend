@@ -85,6 +85,7 @@ const PreSalesPage = () => {
     handleGetAllPresales, handleCreatePresale, handleUpdatePresaleStatus, handleDeletePresale,
     clients
   } = useData();
+  console.log("Presales Data:", presales);
   const [showModal, setShowModal] = useState(false);
   const [showStatusPopup, setShowStatusPopup] = useState(false);
   const [selectedSrNumber, setSelectedSrNumber] = useState(null);
@@ -176,35 +177,57 @@ const PreSalesPage = () => {
     setFormData(prev => ({ ...prev, requirements: joined }));
   };
   // --- Form Submission ---
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    if (
-      (formData.clientCategory === "new" && (!formData.client.name || !formData.client.email || !formData.client.phone)) ||
-      !formData.personName || !formData.budget || !formData.requirements || !formData.orderStartDateTime || !formData.orderEndDateTime
-    ) {
-      alert("Please fill all required fields!");
-      return;
-    }
-    const payload = {
-      ...formData,
-      budget: parseFloat(formData.budget) || 0,
-      client: formData.clientCategory === "existing"
-        ? { clientId: formData.client.clientId }
-        : {
-          name: formData.client.name,
-          email: formData.client.email,
-          phone: formData.client.phone,
-          address: formData.client.address
-        }
+ const handleFormSubmit = async (e) => {
+  e.preventDefault();
+  // Validation
+  if (
+    (formData.clientCategory === "new" && (!formData.client.name || !formData.client.email || !formData.client.phone)) ||
+    !formData.personName || !formData.budget || !formData.requirements || !formData.orderStartDateTime || !formData.orderEndDateTime
+  ) {
+    alert("Please fill all required fields!");
+    return;
+  }
+  let clientPayload = {};
+  if (formData.clientCategory === "existing") {
+    const selectedClient = clients.find(c => `${c.id}` === formData.client.clientId);
+    clientPayload = {
+      clientId: selectedClient?.id,
+      clientName: selectedClient?.name,
     };
-    console.log(payload);
-    const success = await handleCreatePresale(payload, formData.clientCategory === "existing");
-    console.log("Create Presale Success:", success);
-    if (success) {
-      setFormData(defaultForm);
-      setShowModal(false);
-    }
+  } else {
+    clientPayload = {
+      name: formData.client.name,
+      email: formData.client.email,
+      phone: formData.client.phone,
+      address: formData.client.address
+    };
+  }
+  const payload = {
+    approachedVia: formData.approachedVia,
+    budget: parseFloat(formData.budget) || 0,
+    client: clientPayload,
+    conclusion: formData.conclusion,
+    orderStartDateTime: formData.orderStartDateTime,
+    orderEndDateTime: formData.orderEndDateTime,
+    personName: formData.personName,
+    requirements: formData.requirements,
+    status: formData.status,
+    // `dateTime` can be set to now or another value; here we set it to current ISO time:
+    dateTime: new Date().toISOString()
   };
+  // For update (edit)
+  if (editMode && selectedSrNumber) {
+    payload.srNumber = selectedSrNumber;
+  }
+  // Call API
+  const success = await handleCreatePresale(payload, formData.clientCategory === "existing");
+  if (success) {
+    setFormData(defaultForm);
+    setShowModal(false);
+    setEditMode(false);
+    setSelectedSrNumber(null);
+  }
+};
   // Render chip selector for client type (Cash/GST/Printer)
   const renderClientTypeChips = () => (
     <div>
