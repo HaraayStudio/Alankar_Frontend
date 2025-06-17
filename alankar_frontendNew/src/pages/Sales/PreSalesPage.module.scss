@@ -569,3 +569,14 @@ select:disabled {
   .table th, .table td { padding: 9px 5px; font-size: 13px; }
   .modalHeader { font-size: 16.5px; padding: 12px 10px 7px 11px;}
 }
+.viewTemplateBtn {
+  background: #f4a835;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition: background 0.13s;
+  &:hover { background: #222; }
+}

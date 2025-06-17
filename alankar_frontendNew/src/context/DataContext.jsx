@@ -298,6 +298,7 @@ const [postSalesError, setPostSalesError] = useState(null);
       await handleGetAllClients();
       await handleGetAllEmployees();
       await handleGetAllPresales();
+      await handleGetAllPostSales()
     } catch (error) {
       console.error('Error fetching data', error);
     } finally {
