@@ -251,6 +251,7 @@ import {
   createOrder, getAllOrders, getOrderById, updateOrder, deleteOrder,
 } from '../api/orderApi.js';
 import { getAllClients } from '../api/clientsApi.js';
+import { createQuotation } from "../api/quotationApi";
 import {
   createEmployee, getEmployeeById, updateEmployee,
   getAllEmployees, deleteEmployee,
@@ -487,6 +488,18 @@ const handleSendPostSaleMail = async (srNumber) => {
     setPostSalesLoading(false);
   }
 };
+const handleAddQuotation = async (presalesSrNumber, quotationObj) => {
+    try {
+      const response = await createQuotation(presalesSrNumber, quotationObj, authToken);
+      if (response?.data?.status === 201 || response?.data?.status === 200) {
+        // You may want to refetch quotations here or return the new quotation
+        return { success: true, data: response.data.data };
+      }
+      return { success: false, error: response?.data?.message || "Failed to add quotation" };
+    } catch (err) {
+      return { success: false, error: err?.message || "Failed to add quotation" };
+    }
+  };
   // 🟢 Auto-fetch on token update
   useEffect(() => {
     if (authToken) {
@@ -522,7 +535,7 @@ const handleSendPostSaleMail = async (srNumber) => {
         handleUpdatePresaleStatus,
         handleDeletePresale,    postSales, postSalesLoading, postSalesError,
   handleGetAllPostSales, handleCreatePostSale,
-  handleUpdatePostSale, handleSendPostSaleMail,
+  handleUpdatePostSale, handleSendPostSaleMail, handleAddQuotation
       }}
     >
       {children}
