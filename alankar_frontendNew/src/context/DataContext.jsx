@@ -263,7 +263,7 @@ export const DataProvider = ({ children }) => {
   const [employees, setEmployees] = useState([]);
   const [user, setUser] = useState(null); // Should be an object, not array!
   const [loading, setLoading] = useState(false);
-  const [authToken, setAuthToken] = useState(localStorage.getItem('token') || '');
+  const [authToken, setAuthToken] = useState( '');
   // Presale states
   const [presales, setPresales] = useState([]);
   const [presalesLoading, setPresalesLoading] = useState(false);
