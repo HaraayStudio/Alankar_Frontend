@@ -34,9 +34,9 @@ const sidebarItems = [
     ],
   },
   {
-    name: "Projects",
+    name: "Orders",
     path: "/projects",
-    key: "projects",
+    key: "Orders",
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="30" height="31" viewBox="0 0 30 31" fill="none">
         <path d="M26.67 8.97676V23.1455H4V8.97676H11.0844V7.55989C11.0844 7.36064 11.1213 7.17615 11.1951 7.00642C11.2689 6.83669 11.3685 6.6891 11.4939 6.56365C11.6194 6.43819 11.7707 6.33488 11.9478 6.25371C12.1249 6.17253 12.3094 6.13563 12.5013 6.14301H18.1687C18.368 6.14301 18.5525 6.17991 18.7222 6.25371C18.8919 6.3275 19.0395 6.42713 19.165 6.55258C19.2904 6.67803 19.3938 6.82931 19.4749 7.00642C19.5561 7.18353 19.593 7.36802 19.5856 7.55989V8.97676H26.67ZM12.5013 8.97676H18.1687V7.55989H12.5013V8.97676ZM5.41688 10.3936V12.4415L12.5013 15.9726V14.6443H18.1687V15.9726L25.2531 12.4415V10.3936H5.41688ZM13.9181 16.0611V17.478H16.7519V16.0611H13.9181ZM25.2531 21.7286V14.0133L18.1687 17.5666V18.8949H12.5013V17.5666L5.41688 14.0133V21.7286H25.2531Z" fill="currentColor"/>
@@ -44,9 +44,9 @@ const sidebarItems = [
     ),
     hasSubmenu: true,
     submenu: [
-      { name: "All Projects", path: "/projects", key: "projects" },
-      { name: "Add New Project", path: "/projects/new", key: "projects-new" },
-      { name: "Ongoing Projects", path: "/projects/ongoing", key: "projects-ongoing" },
+      { name: "All Orders", path: "/projects", key: "projects" },
+      { name: "Add New Orders", path: "/projects/new", key: "projects-new" },
+      { name: "Ongoing Oredes", path: "/projects/ongoing", key: "projects-ongoing" },
       { name: "History & Details", path: "/projects/history", key: "projects-history" },
     ],
   },
