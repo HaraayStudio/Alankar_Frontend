@@ -1,9 +1,33 @@
 import React, { useEffect, useState } from "react";
 import styles from "./PreSalesPage.module.scss";
+import PRINT_PRICES from "../../printprices";
+// Utility to find cost by name and group (category)
+function getOptionCost(printType, group, optionName, clientType = "Cash", orderType = "Wide format printing") {
+  // For wide format printing
+  try {
+    const groupData = PRINT_PRICES.clientTypes[clientType]?.orderTypes?.[orderType]?.printTypes?.[printType];
+    if (!groupData) return 0;
+    // Handle category name differences
+    const groupKey = Object.keys(groupData).find(k => k.toLowerCase() === group.toLowerCase());
+    if (!groupKey) return 0;
+    const arr = groupData[groupKey];
+    if (!Array.isArray(arr)) return 0;
+    const found = arr.find(i => i.name.toLowerCase() === optionName.toLowerCase());
+    // For UV Print costCMYK/cost
+    if (found) {
+      if (typeof found.cost === "number") return found.cost;
+      if (typeof found.costCMYK === "number") return found.costCMYK;
+      if (typeof found.costCMYKW === "number") return found.costCMYKW;
+    }
+  } catch (err) {
+    return 0;
+  }
+  return 0;
+}
 // Print types and options
 const printTypes = ["Wide format printing", "Digital Paper printing"];
 const wideFormatOptions = {
-  media: [
+  Media: [
     "Vinyl", "Cast Vinyl", "Clear vinyl", "One way vision", "Frosted Film",
     "Translite Film", "Fabric cloth", "Backlit fabric", "Destructible Vinyl",
     "2 year Vinyl", "Canvas", "Eco Texture Vinyl", "Wallpaper", "PP vinyl",
@@ -11,12 +35,12 @@ const wideFormatOptions = {
     "Printing Signs", "Star flex eco", "Star flex solvent", "Flex regular solvent",
     "ACP", "Acrylic", "MDF", "Curtain", "Glass"
   ],
-  printType: ["Eco solvent", "Solvent", "UV Print"],
-  lamination: [
+  PrintType: ["Eco solvent", "Solvent", "UV Print"],
+  Lamination: [
     "No lamination", "Matt", "Glossy", "Sparkle", "Two year outdoor",
     "Both side gumming", "Glossy coat", "Matt coat", "Floor Lamination"
   ],
-  mountingSheet: [
+  MountingSheet: [
     "Sunpack", "3mm foam sheet", "5mm foam sheet", "8mm foam sheet",
     "10mm foam sheet", "ACP sheet", "3mm acrylic", "5mm acrylic",
     "Poly carbonate clear sheet", "Poly carbonate white sheet",
@@ -24,11 +48,11 @@ const wideFormatOptions = {
     "Clip on frame", "Fabric frame", "Acrylic stands", "Promotional table",
     "Rollup standy", "Luxury rollup standy"
   ],
-  framing: ["No frame", "Half inch frame", "1inch frame", "2inch Frame"],
-  installation: ["Drilling on wall", "Pasting on site", "Rolled prints only"]
+  Framing: ["No frame", "Half inch frame", "1inch frame", "2inch Frame"],
+  Installation: ["Drilling on wall", "Pasting on site", "Rolled prints only"]
 };
 const digitalPaperOptions = {
-  paperTypes: [
+  PaperTypes: [
     "Sunshine 100gsm", "Bond Paper 100gsm", "Art paper 130gsm", "Art paper 170gsm",
     "Art paper 250gsm", "Art paper 300gsm", "Art paper 350gsm", "Regular sticker",
     "NT sticker", "NT Transperent Sticker", "Gold Matt sticker", "Silver Matt sticker",
@@ -36,25 +60,26 @@ const digitalPaperOptions = {
     "Texture paper 009", "Texture paper 010", "Texture paper 012", "Texture paper 021",
     "Texture paper 022"
   ],
-  printType: [
+  PrintType: [
     "Digital", "Offset", "Screen", "Pigment", "Dekstop A4 Laser", "Dekstop A4 B/W"
   ],
-  lamination: [
+  Lamination: [
     "Gloss lamination", "Matt Lamination", "Texture Matt lamination",
     "Sparkle Lamination", "Spot UV", "Spot UV + Gold", "Spot UV + Silver"
   ],
-  finishing: [
+  Finishing: [
     "No cut", "Full cut to size", "Die Half cutting", "Visiting card cutting",
     "Metal Badge", "Keychain", "Metal Badge Hole punch", "Table top A4 standy",
     "Table top A3 standy"
   ],
-  framing: ["No frame", "Half inch frame", "1inch frame", "2inch Frame"]
+  Framing: ["No frame", "Half inch frame", "1inch frame", "2inch Frame"]
 };
 const clientTypes = ["Cash", "GST", "Printer"];
 const defaultForm = {
   clientType: clientTypes[0], // Default to "Cash"
   clientCategory: "new",
   printType: printTypes[0],
+  qty: 1, // <-- ADDED
   requirementSelections: {},
   personName: "",
   budget: "",
@@ -86,11 +111,53 @@ export default function PreSalesForm({
   useEffect(() => {
     updateRequirements();
     // eslint-disable-next-line
-  }, [formData.requirementSelections, formData.printType]);
+  }, [formData.requirementSelections, formData.printType, formData.qty]);
   const getPrintOptions = () =>
     formData.printType === printTypes[0] ? wideFormatOptions : digitalPaperOptions;
+  // 🟢 UPDATED: Store full {name, cost}
+  const handleOptionSelect = (group, option) => {
+    setFormData(prev => {
+      const selections = { ...prev.requirementSelections };
+      const printType = prev.printType === printTypes[0] ? prev.requirementSelections?.PrintType?.[0] || "Eco solvent" : "Digital"; // fallback
+      const cost = getOptionCost(printType, group, option, prev.clientType, prev.printType);
+      if (!selections[group]) selections[group] = [];
+      const exists = selections[group].find(x => x.name === option);
+      if (exists) {
+        selections[group] = selections[group].filter(x => x.name !== option);
+      } else {
+        selections[group].push({ name: option, cost: cost });
+      }
+      return { ...prev, requirementSelections: selections };
+    });
+  };
+  // 🟢 Update Requirements Display
+  const updateRequirements = () => {
+    const selections = formData.requirementSelections || {};
+    // Only join names for display, cost is used for API/backend
+    const joined = Object.entries(selections)
+      .filter(([k]) => k !== "qty")
+      .map(([group, items]) =>
+        (items || []).map(i => i.name).join(" + ")
+      )
+      .filter(Boolean)
+      .join(" + ");
+    setFormData(prev => ({ ...prev, requirements: joined }));
+  };
+  // 🟢 Main form input change handler, now includes quantity
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+    if (name === "qty") {
+      setFormData(prev => ({
+        ...prev,
+        qty: Number(value) < 1 ? 1 : Number(value)
+      }));
+      setFormData(prev => ({
+        ...prev,
+        requirementSelections: { ...prev.requirementSelections, qty: Number(value) < 1 ? 1 : Number(value) }
+      }));
+      return;
+    }
+    // ... (rest of your existing handleInputChange code below, unchanged)
     if (name === "clientType") {
       setFormData((prev) => ({ ...prev, clientType: value }));
       return;
@@ -141,26 +208,14 @@ export default function PreSalesForm({
       [name]: value
     }));
   };
-  const handleOptionSelect = (group, option) => {
-    setFormData(prev => {
-      const selections = { ...prev.requirementSelections };
-      if (selections[group]?.includes(option)) {
-        selections[group] = selections[group].filter(o => o !== option);
-      } else {
-        selections[group] = [...(selections[group] || []), option];
-      }
-      return { ...prev, requirementSelections: selections };
-    });
-  };
-  const updateRequirements = () => {
-    const selections = formData.requirementSelections || {};
-    const joined = Object.values(selections).flat().join(" + ");
-    setFormData(prev => ({ ...prev, requirements: joined }));
-  };
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    // Ensure qty is set in requirementSelections for backend/parent
+    const dataToSend = { ...formData, requirementSelections: { ...formData.requirementSelections, qty: formData.qty } };
+    console.log("Form Data to Submit:", dataToSend);
+    onSubmit(dataToSend);
   };
+  // --- Rendering code ---
   const renderClientTypeChips = () => (
     <div>
       <div className={styles.labelStrong}>Client Type</div>
@@ -185,16 +240,19 @@ export default function PreSalesForm({
         {group.replace(/([A-Z])/g, " $1").replace(/^./, s => s.toUpperCase())}
       </div>
       <div className={styles.optionsWrap}>
-        {options.map(option => (
-          <button
-            type="button"
-            className={`${styles.optionChip} ${(formData.requirementSelections[group] || []).includes(option) ? styles.selected : ""}`}
-            key={option}
-            onClick={() => handleOptionSelect(group, option)}
-          >
-            {option}
-          </button>
-        ))}
+        {options.map(option => {
+          const selected = (formData.requirementSelections[group] || []).some(x => x.name === option);
+          return (
+            <button
+              type="button"
+              className={`${styles.optionChip} ${selected ? styles.selected : ""}`}
+              key={option}
+              onClick={() => handleOptionSelect(group, option)}
+            >
+              {option}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -261,6 +319,18 @@ export default function PreSalesForm({
             <option value={pt} key={pt}>{pt}</option>
           ))}
         </select>
+      </div>
+      {/* Add Quantity Field */}
+      <div className={styles.inputRow}>
+        <label>Quantity</label>
+        <input
+          type="number"
+          name="qty"
+          min={1}
+          value={formData.qty}
+          onChange={handleInputChange}
+          style={{ width: "100px" }}
+        />
       </div>
       <div className={styles.inputRow}>
         <label>Approached Via</label>

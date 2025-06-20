@@ -6,7 +6,7 @@ const api = axios.create({
   headers: { 'Content-Type': 'application/json' },
   validateStatus: status => status >= 200 && status < 400
 });
-// presalesSrNumber: number, quotation: object, token: string
+// Existing: createQuotation
 export const createQuotation = (presalesSrNumber, quotation, token) =>
   api.post(
     '/quotation/createquotation',
@@ -16,4 +16,14 @@ export const createQuotation = (presalesSrNumber, quotation, token) =>
       headers: { Authorization: `Bearer ${token}` }
     }
   );
-// You can add more endpoints here if needed.
+// NEW: updateQuotationStatus
+export const updateQuotationStatus = (quotationNumber, isAccepted, token) =>
+  api.put(
+    '/quotation/updatequotation',
+    null,
+    {
+      params: { quotationNumber, isAccepted },
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+// Export your API as needed

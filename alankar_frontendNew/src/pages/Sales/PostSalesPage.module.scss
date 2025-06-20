@@ -1,0 +1,201 @@
+// postsale
+.container {
+  margin-top: 80px;
+  padding: 24px;
+  background: #f5f8fa;
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  background: #fff;
+  padding: 20px 32px;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(56,56,120,0.09);
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #232946;
+    margin: 0;
+  }
+}
+.addButton {
+  background: linear-gradient(90deg,#5f4eff,#8979ff);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 8px;
+  padding: 12px 26px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(95,78,255,0.09);
+  cursor: pointer;
+  transition: all 0.16s;
+  &:hover {
+    background: #5c59e6;
+    box-shadow: 0 4px 12px rgba(95,78,255,0.15);
+  }
+}
+.tableContainer {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(56,56,120,0.08);
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  th, td {
+    padding: 13px 12px;
+    font-size: 14px;
+  }
+  th {
+    background: #f7f7fb;
+    color: #7d8597;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #ebecf0;
+    text-transform: uppercase;
+  }
+  td {
+    color: #232946;
+    border-bottom: 1px solid #f2f2f6;
+    vertical-align: middle;
+  }
+}
+.statusBadge {
+  padding: 3px 14px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+  background: #f7f7fb;
+}
+.statusOnboarded {
+  background: #e6fbe8;
+  color: #0e7c3e;
+}
+.statusPending {
+  background: #fff4e3;
+  color: #bd710e;
+}
+.actionButtons {
+  display: flex;
+  gap: 6px;
+}
+.iconBtn {
+  border: none;
+  padding: 6px;
+  background: #f5f7fb;
+  border-radius: 6px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: background 0.16s;
+  &:hover {
+    background: #eceffd;
+  }
+}
+.invoiceBtn {
+  background: #fff1db;
+  color: #f7b23b;
+  padding: 7px 18px;
+  border-radius: 22px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  &:hover { background: #ffe4ba; }
+}
+.noData {
+  text-align: center;
+  color: #acb3bf;
+  padding: 30px 0;
+  font-size: 16px;
+}
+.loading {
+  text-align: center;
+  color: #7d8597;
+  padding: 40px 0;
+  font-size: 17px;
+}
+/* Modal & Popups */
+.modalBackdrop {
+  position: fixed; left: 0; top: 0; right: 0; bottom: 0;
+  background: rgba(30,30,60,0.18);
+  z-index: 50;
+  display: flex; align-items: center; justify-content: center;
+}
+.invoiceModalBox, .invoicePreviewBox {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px rgba(52,54,82,0.17);
+  padding: 0;
+  min-width: 420px;
+  max-width: 650px;
+  width: 95vw;
+  max-height: 95vh;
+  overflow: auto;
+  position: relative;
+}
+.invoiceModalHeader {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 20px 28px 8px 28px;
+  border-bottom: 1px solid #eee;
+  font-weight: 700;
+  font-size: 20px;
+  background: #f5f8fa;
+}
+.invoiceModalBody {
+  padding: 18px 26px 22px 26px;
+}
+.invoiceTable {
+  width: 100%;
+  th, td { padding: 10px 10px; font-size: 14px; }
+  th { background: #f8f9fa; color: #726cf8; }
+}
+.closeButton {
+  background: #f5f7fb;
+  border: none;
+  border-radius: 8px;
+  padding: 7px;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 17px;
+  transition: background 0.16s;
+  &:hover { background: #e8eaf6; }
+}
+/* Invoice Preview */
+.invoicePreviewBox {
+  padding: 32px 36px 24px 36px;
+  .previewHeader {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 18px;
+    margin-bottom: 16px;
+  }
+  .logo { width: 72px; height: auto; margin-right: 14px; }
+  .companyName { font-weight: 800; font-size: 22px; color: #22223b;}
+  .companyTagline { font-size: 15px; color: #655af1;}
+  .companyAddr { font-size: 13px; color: #7d8597; }
+  .previewMeta { margin: 20px 0 24px 0; font-size: 15px; color: #2c2c48; }
+  .detailsTable { width: 100%; border-collapse: collapse; margin-bottom: 20px;
+    th, td { padding: 10px 12px; font-size: 14px; }
+    th { background: #f7f7fb; color: #726cf8;}
+    tfoot td { background: #f8f8fb; font-weight: 700;}
+  }
+  .previewFooter {
+    margin-top: 22px;
+    text-align: center;
+    color: #4f46e5;
+    font-weight: 700;
+    font-size: 17px;
+    > div:last-child { font-size: 14px; color: #7d8597; font-weight: 400;}
+  }
+}
