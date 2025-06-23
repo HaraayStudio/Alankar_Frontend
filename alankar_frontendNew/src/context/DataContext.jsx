@@ -15,11 +15,14 @@ import {
 import {
   createOrder, getAllOrders, getOrderById, updateOrder, deleteOrder,
 } from '../api/orderApi.js';
-import { getAllClients } from '../api/clientsApi.js';
+import { getAllClients ,createClient} from '../api/clientsApi.js';
 import {
   createQuotation,
-  updateQuotationStatus // <-- Add this import
+  updateQuotationStatus , updateQuotation
 } from "../api/quotationApi";
+import {
+ createInvoice
+} from "../api/invoiceApi.js";
 import {
   createEmployee, getEmployeeById, updateEmployee,
   getAllEmployees, deleteEmployee,
@@ -37,7 +40,7 @@ export const DataProvider = ({ children }) => {
   const [presales, setPresales] = useState([]);
   const [presalesLoading, setPresalesLoading] = useState(false);
   const [presalesError, setPresalesError] = useState(null);
-  // --- PostSale states ---
+ // ... other states
   const [postSales, setPostSales] = useState([]);
   const [postSalesLoading, setPostSalesLoading] = useState(false);
   const [postSalesError, setPostSalesError] = useState(null);
@@ -66,7 +69,7 @@ export const DataProvider = ({ children }) => {
       await handleGetAllClients();
       await handleGetAllEmployees();
       await handleGetAllPresales();
-      await handleGetAllPostSales();
+    handleGetAllPostSales();
     } catch (error) {
       console.error('Error fetching data', error);
     } finally {
@@ -94,6 +97,15 @@ export const DataProvider = ({ children }) => {
       setClients(response.data.data);
     } catch (error) {
       console.error('Error fetching clients', error);
+    }
+  };
+  const handleCreateClient = async (clientData) => {
+    if (!authToken) return;
+    try {
+      await createClient(clientData, authToken);
+      await handleGetAllClients();
+    } catch (error) {
+      console.error('Error creating employee', error);
     }
   };
   // --- Employees ---
@@ -202,16 +214,24 @@ export const DataProvider = ({ children }) => {
       setPresalesLoading(false);
     }
   };
-  // --- PostSales ---
+   // --- PostSales Handlers ---
   const handleGetAllPostSales = async () => {
     if (!authToken) return;
     setPostSalesLoading(true);
     setPostSalesError(null);
     try {
       const res = await getAllPostSales(authToken);
-      setPostSales(res.data?.data || []);
+      // Handles: data as array or {data: array}
+      setPostSales(
+        Array.isArray(res.data)
+          ? res.data
+          : Array.isArray(res.data.data)
+            ? res.data.data
+            : []
+      );
     } catch (err) {
       setPostSalesError('Failed to fetch post sales');
+      setPostSales([]);
     } finally {
       setPostSalesLoading(false);
     }
@@ -283,6 +303,29 @@ export const DataProvider = ({ children }) => {
       return { success: false, error: err?.message || "Failed to update status" };
     }
   };
+  const handleUpdateQuotation = async (quotationObj, quotationNumber) => {
+  try {
+    const res = await updateQuotation(quotationObj, quotationNumber, authToken);
+    if (res?.data?.status === 200) {
+      return { success: true, data: res.data.data };
+    }
+    return { success: false, error: res?.data?.message || "Failed to update quotation" };
+  } catch (err) {
+    return { success: false, error: err?.message || "Failed to update quotation" };
+  }
+};
+  // --- Invoice ---
+  const handleAddInvoice = async ( invoiceData) => {
+    try {
+      const response = await createInvoice(invoiceData, authToken);
+      if (response?.data?.status === 201 || response?.data?.status === 200) {
+        return { success: true, data: response.data.data };
+      }
+      return { success: false, error: response?.data?.message || "Failed to add quotation" };
+    } catch (err) {
+      return { success: false, error: err?.message || "Failed to add quotation" };
+    }
+  };
   // --- Auto-fetch on token update ---
   useEffect(() => {
     if (authToken) {
@@ -308,6 +351,8 @@ export const DataProvider = ({ children }) => {
         handleGetAllOrders,
         handleGetAllClients,
         handleGetAllEmployees,
+        // Clients
+        handleCreateClient,
         // Employee Actions
         handleCreateEmployee,
         handleGetEmployeeById,
@@ -321,11 +366,15 @@ export const DataProvider = ({ children }) => {
         handleDeletePresale,
         // PostSales
         postSales, postSalesLoading, postSalesError,
-        handleGetAllPostSales, handleCreatePostSale,
-        handleUpdatePostSale, handleSendPostSaleMail,
+        handleGetAllPostSales,
+        handleCreatePostSale,
+        handleUpdatePostSale,
+        handleSendPostSaleMail,
         // Quotations
-        handleAddQuotation,
+        handleAddQuotation, handleUpdateQuotation,
         handleUpdateQuotationStatus // <-- Expose this handler!
+        // Invoice
+        , handleAddInvoice
       }}
     >
       {children}

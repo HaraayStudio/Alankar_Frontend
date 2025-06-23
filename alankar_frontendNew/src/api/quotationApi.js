@@ -19,11 +19,20 @@ export const createQuotation = (presalesSrNumber, quotation, token) =>
 // NEW: updateQuotationStatus
 export const updateQuotationStatus = (quotationNumber, isAccepted, token) =>
   api.put(
-    '/quotation/updatequotation',
+    '/quotation/updatequotationstatus',
     null,
     {
       params: { quotationNumber, isAccepted },
       headers: { Authorization: `Bearer ${token}` }
     }
   );
-// Export your API as needed
+// --- Update Quotation ---
+export const updateQuotation = (quotation, quotationNumber, token) =>
+  axios.put(
+    `${BASE_URL}/quotation/updatequotation`,
+    quotation,
+    {
+      params: { quotationNumber },
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );

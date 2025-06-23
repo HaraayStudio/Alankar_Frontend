@@ -1,693 +1,359 @@
-import React, { useState } from 'react';
-import styles from './CreateOrderForm.module.scss';
-const OrderForm = () => {
-  const [isOldClient, setIsOldClient] = useState(false);
-  const [selectedImages, setSelectedImages] = useState([]);
-  const [formData, setFormData] = useState({
-    // Client data
-    clientId: '',
-    clientName: '',
-    clientEmail: '',
-    clientPhone: '',
-    clientAddress: '',
-    // Order data
-    status: 'CREATED',
-    priority: 'HIGH',
-    startDate: '',
-    endDate: '',
-    description: '',
-    type: '',
-    // Steps data
-    steps: []
+import React, { useState } from "react";
+import styles from "./AddOrder.module.scss";
+import PRINT_PRICES from "../../printprices";
+import { X, Upload } from "lucide-react";
+// Dummy props: pass your actual clients, handleAddPostSale, etc.
+export default function AddPostSalesForm({
+  clients = [],
+  onClose,
+  onSubmit,
+}) {
+  // --- Form State ---
+  const [form, setForm] = useState({
+    isOldClient: false,
+    client: { name: "", email: "", phone: "", address: "", GSTCertificate: "", PAN: "" },
+    clientId: "",
+    estimatedQuote: "",
+    negotiationPrice: "",
+    finalAmtWithOutGST: "",
+    gstPercentage: "18",
+    remark: "",
+    postSalesdateTime: new Date().toISOString().slice(0,16),
+    order: {
+      status: "CREATED",
+      priority: "MEDIUM",
+      createdAt: new Date().toISOString().slice(0,16),
+      startDate: "",
+      endDate: "",
+      type: "Wide format printing",
+      description: "",
+      steps: [],
+    },
+    requirements: "",
+    requirementSelections: {},
+    selectedPrintType: "",
+    imageFiles: [],
+    receivedPayments: [],
   });
-  // Print type options
-  const printTypes = [
-    'Wide format printing',
-    'Digital Paper printing'
-  ];
-  // Wide format printing options
-  const wideFormatOptions = {
-    media: [
-      'Vinyl', 'Cast Vinyl', 'Clear vinyl', 'One way vision', 'Frosted Film', 
-      'Translite Film', 'Fabric cloth', 'Backlit fabric', 'Destructible Vinyl', 
-      '2 year Vinyl', 'Canvas', 'Eco Texture Vinyl', 'Wallpaper', 'PP vinyl', 
-      'canon Canvas 12 colour', 'Radium', 'Retro Chinese Retro', '3M Night Glow', 
-      'Printing Signs', 'Star flex eco', 'Star flex solvent', 'Flex regular solvent', 
-      'ACP', 'Acrylic', 'MDF', 'Curtain', 'Glass'
-    ],
-    printType: ['Eco solvent', 'Solvent', 'UV Print'],
-    lamination: [
-      'No lamination', 'Matt', 'Glossy', 'Sparkle', 'Two year outdoor', 
-      'Both side gumming', 'Glossy coat', 'Matt coat', 'Floor Lamination'
-    ],
-    mountingSheet: [
-      'Sunpack', '3mm foam sheet', '5mm foam sheet', '8mm foam sheet', 
-      '10mm foam sheet', 'ACP sheet', '3mm acrylic', '5mm acrylic', 
-      'Poly carbonate clear sheet', 'Poly carbonate white sheet', 
-      'Bubbleguard sheet 600gsm', 'Bubbleguard sheet 900gsm', 'Metal frame', 
-      'Clip on frame', 'Fabric frame', 'Acrylic stands', 'Promotional table', 
-      'Rollup standy', 'Luxury rollup standy'
-    ],
-    framing: ['No frame', 'Half inch frame', '1inch frame', '2inch Frame'],
-    installation: ['Drilling on wall', 'Pasting on site', 'Rolled prints only']
+  // --- Step/Option Helpers ---
+  const clientTypes = Object.keys(PRINT_PRICES.clientTypes);
+  const printTypes = ["Wide format printing", "Digital format printing"];
+  function getOptionGroups(clientType, orderType) {
+    return (
+      PRINT_PRICES.clientTypes?.[clientType]?.orderTypes?.[orderType]?.printTypes || {}
+    );
+  }
+  function getOptionCategories(printTypesObj, selectedPrintType) {
+    if (!printTypesObj[selectedPrintType]) return {};
+    const categories = {};
+    Object.entries(printTypesObj[selectedPrintType]).forEach(
+      ([group, options]) => {
+        categories[group] = options.map((opt) => opt.name);
+      }
+    );
+    return categories;
+  }
+  function buildRequirementsString(selectedPrintType, selections) {
+    return Object.entries(selections)
+      .filter(([k]) => k !== "qty" && k !== "Media")
+      .map(([group, arr]) =>
+        arr.map((i) => `${group.toLowerCase()}:${i.name}`).join(" + ")
+      )
+      .filter(Boolean)
+      .join(" + ");
+  }
+  // --- Option Selection Handlers ---
+  const handlePrintTypeOptionSelect = (pt) => {
+    setForm((prev) => ({
+      ...prev,
+      selectedPrintType: pt,
+      requirementSelections: {},
+      requirements: pt,
+      order: { ...prev.order, type: pt },
+    }));
   };
-  // Digital paper printing options
-  const digitalPaperOptions = {
-    paperTypes: [
-      'Sunshine 100gsm', 'Bond Paper 100gsm', 'Art paper 130gsm', 'Art paper 170gsm', 
-      'Art paper 250gsm', 'Art paper 300gsm', 'Art paper 350gsm', 'Regular sticker', 
-      'NT sticker', 'NT Transperent Sticker', 'Gold Matt sticker', 'Silver Matt sticker', 
-      'Holographic sticker', 'NT paper', 'Texture paper 007', 'Texture paper 008', 
-      'Texture paper 009', 'Texture paper 010', 'Texture paper 012', 'Texture paper 021', 
-      'Texture paper 022'
-    ],
-    printType: ['Digital', 'Offset', 'Screen', 'Pigment', 'Dekstop A4 Laser', 'Dekstop A4 B/W'],
-    lamination: [
-      'Gloss lamination', 'Matt Lamination', 'Texture Matt lamination', 
-      'Sparkle Lamination', 'Spot UV', 'Spot UV + Gold', 'Spot UV + Silver'
-    ],
-    finishing: [
-      'No cut', 'Full cut to size', 'Die Half cutting', 'Visiting card cutting', 
-      'Metal Badge', 'Keychain', 'Metal Badge Hole punch', 'Table top A4 standy', 
-      'Table top A3 standy'
-    ],
-    framing: ['No frame', 'Half inch frame', '1inch frame', '2inch Frame']
+  const handleOptionSelect = (group, option) => {
+    setForm((prev) => {
+      const selections = { ...prev.requirementSelections };
+      if (!selections[group]) selections[group] = [];
+      const exists = selections[group].find((x) => x.name === option);
+      if (exists) {
+        selections[group] = selections[group].filter((x) => x.name !== option);
+      } else {
+        selections[group].push({ name: option });
+      }
+      // Build description for order
+      const description = buildRequirementsString(prev.selectedPrintType, selections);
+      return {
+        ...prev,
+        requirementSelections: selections,
+        requirements: description,
+        order: { ...prev.order, description },
+      };
+    });
   };
-  const [stepSelections, setStepSelections] = useState({
-    step1: '',
-    step2: '',
-    step3: '',
-    step4: '',
-    step5: '',
-    step6: ''
-  });
+  // --- Field Change Handler ---
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
+    const { name, value, type, checked, files } = e.target;
+    // Handle image files
+    if (name === "imageFiles") {
+      setForm((prev) => ({
+        ...prev,
+        imageFiles: Array.from(files),
+      }));
+      return;
+    }
+    if (name === "isOldClient") {
+      setForm((prev) => ({
+        ...prev,
+        isOldClient: checked,
+        client: checked ? { ...prev.client } : { name: "", email: "", phone: "", address: "", GSTCertificate: "", PAN: "" },
+        clientId: "",
+      }));
+      return;
+    }
+    if (name.startsWith("client.")) {
+      const field = name.split(".")[1];
+      setForm((prev) => ({
+        ...prev,
+        client: { ...prev.client, [field]: value },
+      }));
+      return;
+    }
+    if (name.startsWith("order.")) {
+      const field = name.split(".")[1];
+      setForm((prev) => ({
+        ...prev,
+        order: { ...prev.order, [field]: value },
+      }));
+      return;
+    }
+    setForm((prev) => ({
       ...prev,
-      [name]: value
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
-  const handleStepChange = (step, value) => {
-    setStepSelections(prev => ({
-      ...prev,
-      [step]: value
-    }));
-  };
-  const handleImageChange = (e) => {
-    const files = Array.from(e.target.files);
-    setSelectedImages(files);
-  };
-  const buildStepsArray = () => {
-    const steps = [];
-    if (formData.type === 'Wide format printing') {
-      const stepNames = ['Media', 'Print Type', 'Lamination', 'Mounting sheet', 'Framing', 'Installation'];
-      stepNames.forEach((stepName, index) => {
-        const stepKey = `step${index + 1}`;
-        if (stepSelections[stepKey]) {
-          steps.push({
-            stepName,
-            measurement: stepSelections[stepKey],
-            status: 'CREATED',
-            sequence: index + 1
-          });
-        }
-      });
-    } else if (formData.type === 'Digital Paper printing') {
-      const stepNames = ['Paper Types', 'Print Type', 'Lamination', 'Finishing', 'Framing'];
-      stepNames.forEach((stepName, index) => {
-        const stepKey = `step${index + 1}`;
-        if (stepSelections[stepKey]) {
-          steps.push({
-            stepName,
-            measurement: stepSelections[stepKey],
-            status: 'CREATED',
-            sequence: index + 1
-          });
-        }
-      });
-    }
-    return steps;
-  };
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const handleSubmit = async () => {
-    // Basic validation
-    if (isOldClient && !formData.clientId) {
-      alert('Please enter client ID');
-      return;
-    }
-    if (!isOldClient && (!formData.clientName || !formData.clientEmail || !formData.clientPhone || !formData.clientAddress)) {
-      alert('Please fill in all client details');
-      return;
-    }
-    if (!formData.type || !formData.startDate || !formData.endDate || !formData.description) {
-      alert('Please fill in all order details');
-      return;
-    }
-    setIsSubmitting(true);
-    const orderData = {
-      client: isOldClient 
-        ? { id: parseInt(formData.clientId) }
-        : {
-            name: formData.clientName,
-            email: formData.clientEmail,
-            phone: formData.clientPhone,
-            address: formData.clientAddress
-          },
-      status: formData.status,
-      priority: formData.priority,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-      description: formData.description,
-      type: formData.type,
-      steps: buildStepsArray()
+  // --- Submit Handler ---
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    const selectedClient =
+      form.isOldClient && form.clientId
+        ? clients.find((c) => String(c.id) === String(form.clientId))
+        : null;
+    const payload = {
+      ...form,
+      client: form.isOldClient && selectedClient ? selectedClient : form.client,
+      order: {
+        ...form.order,
+        steps: Object.entries(form.requirementSelections)
+          .flatMap(([group, arr]) =>
+            arr.map((item) => ({
+              stepName: group,
+              measurement: item.name,
+              status: form.order.status,
+            }))
+          ),
+      },
+      requirements: form.requirements,
+      // You can map imageFiles etc as needed for upload
     };
-    console.log('Submitting order data:', orderData);
-    try {
-      // Create FormData for multipart request
-      const formDataToSend = new FormData();
-      // Add order data as JSON blob with proper content type
-      const orderBlob = new Blob([JSON.stringify(orderData)], {
-        type: 'application/json'
-      });
-      formDataToSend.append('order', orderBlob);
-      // Add images if selected
-      if (selectedImages.length > 0) {
-        selectedImages.forEach((image) => {
-          formDataToSend.append('images', image);
-        });
-      }
-      // Debug: Log FormData contents
-      console.log('FormData contents:');
-      for (let pair of formDataToSend.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-      }
-      const response = await fetch(`http://localhost:8080/api/orders/createorder?isOldClient=${isOldClient}`, {
-        method: 'POST',
-        headers: {
-          'Authorization': "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsInVzZXJJZCI6MSwiaWF0IjoxNzQ5NDcxMzY4LCJleHAiOjE3NDk1NTc3Njh9.TYlD54tGWBzVnjz0GHrnT6KCrX_hAIE40OoC3ELlh4M",
-        },
-        body: formDataToSend
-      });
-      console.log('Response status:', response.status);
-      console.log('Response headers:', response.headers);
-      let responseData = null;
-      const contentType = response.headers.get('content-type');
-      // Check if response has content and is JSON
-      if (contentType && contentType.includes('application/json')) {
-        try {
-          responseData = await response.json();
-        } catch (jsonError) {
-          console.error('JSON parse error:', jsonError);
-          responseData = { message: 'Invalid JSON response from server' };
-        }
-      } else {
-        // If not JSON, get text response
-        const textResponse = await response.text();
-        console.log('Non-JSON response:', textResponse);
-        responseData = { message: textResponse || 'No response from server' };
-      }
-      if (response.ok) {
-        alert('Order created successfully!');
-        console.log('Order created:', responseData);
-        // Reset form
-        setFormData({
-          clientId: '',
-          clientName: '',
-          clientEmail: '',
-          clientPhone: '',
-          clientAddress: '',
-          status: 'CREATED',
-          priority: 'HIGH',
-          startDate: '',
-          endDate: '',
-          description: '',
-          type: '',
-          steps: []
-        });
-        setStepSelections({
-          step1: '',
-          step2: '',
-          step3: '',
-          step4: '',
-          step5: '',
-          step6: ''
-        });
-        setSelectedImages([]);
-        setIsOldClient(false);
-      } else {
-        console.error('Error response:', responseData);
-        let errorMessage = 'Unknown error';
-        // Handle different HTTP status codes
-        switch (response.status) {
-          case 403:
-            errorMessage = 'Access forbidden. Check authentication or CORS settings.';
-            break;
-          case 404:
-            errorMessage = 'API endpoint not found. Check the URL.';
-            break;
-          case 500:
-            errorMessage = 'Server error. Please try again later.';
-            break;
-          default:
-            errorMessage = responseData?.message || `HTTP ${response.status}: ${response.statusText}`;
-        }
-        alert(`Error creating order: ${errorMessage}`);
-      }
-    } catch (error) {
-      console.error('Network Error:', error);
-      // Handle different types of network errors
-      if (error.name === 'TypeError' && error.message.includes('fetch')) {
-        alert('Network error: Cannot connect to server. Please check if the server is running on http://localhost:8080');
-      } else if (error.name === 'SyntaxError') {
-        alert('Server response error: Invalid response format');
-      } else {
-        alert(`Network error: ${error.message}`);
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Do actual post request or callback
+    onSubmit?.(payload);
+    onClose?.();
   };
-  const getCurrentStepOptions = (stepNumber) => {
-    if (formData.type === 'Wide format printing') {
-      switch (stepNumber) {
-        case 1: return wideFormatOptions.media;
-        case 2: return wideFormatOptions.printType;
-        case 3: return wideFormatOptions.lamination;
-        case 4: return wideFormatOptions.mountingSheet;
-        case 5: return wideFormatOptions.framing;
-        case 6: return wideFormatOptions.installation;
-        default: return [];
-      }
-    } else if (formData.type === 'Digital Paper printing') {
-      switch (stepNumber) {
-        case 1: return digitalPaperOptions.paperTypes;
-        case 2: return digitalPaperOptions.printType;
-        case 3: return digitalPaperOptions.lamination;
-        case 4: return digitalPaperOptions.finishing;
-        case 5: return digitalPaperOptions.framing;
-        default: return [];
-      }
-    }
-    return [];
-  };
-  const getStepLabel = (stepNumber) => {
-    if (formData.type === 'Wide format printing') {
-      const labels = ['Media', 'Print Type', 'Lamination', 'Mounting Sheet', 'Framing', 'Installation'];
-      return labels[stepNumber - 1];
-    } else if (formData.type === 'Digital Paper printing') {
-      const labels = ['Paper Types', 'Print Type', 'Lamination', 'Finishing', 'Framing'];
-      return labels[stepNumber - 1];
-    }
-    return '';
-  };
-  const getMaxSteps = () => {
-    return formData.type === 'Wide format printing' ? 6 : 5;
-  };
-  return (
-    <div style={{ 
-      minHeight: '100vh', 
-      backgroundColor: '#f5f5f5', 
-      padding: '20px',
-      fontFamily: 'Arial, sans-serif'
-    }}>
-      <div style={{
-        maxWidth: '800px',
-        margin: '0 auto',
-        backgroundColor: 'white',
-        borderRadius: '8px',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
-        padding: '30px'
-      }}>
-        <h1 style={{
-          textAlign: 'center',
-          color: '#333',
-          marginBottom: '30px',
-          fontSize: '28px',
-          fontWeight: 'bold'
-        }}>Create Printing Order</h1>
-        <div>
-          {/* Client Type Selection */}
-          <div style={{ marginBottom: '30px' }}>
-            <h2 style={{
-              color: '#555',
-              fontSize: '20px',
-              marginBottom: '15px',
-              borderBottom: '2px solid #007bff',
-              paddingBottom: '5px'
-            }}>Client Information</h2>
-            <div style={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
-              <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                <input
-                  type="radio"
-                  name="clientType"
-                  checked={!isOldClient}
-                  onChange={() => setIsOldClient(false)}
-                  style={{ marginRight: '8px' }}
-                />
-                New Client
-              </label>
-              <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
-                <input
-                  type="radio"
-                  name="clientType"
-                  checked={isOldClient}
-                  onChange={() => setIsOldClient(true)}
-                  style={{ marginRight: '8px' }}
-                />
-                Existing Client
-              </label>
-            </div>
-          </div>
-          {/* Client Details */}
-          {isOldClient ? (
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                Client ID
-              </label>
-              <input
-                type="number"
-                name="clientId"
-                value={formData.clientId}
-                onChange={handleInputChange}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '16px'
-                }}
-                required
-                placeholder="Enter client ID"
-              />
-            </div>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px', marginBottom: '30px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                  Client Name
-                </label>
-                <input
-                  type="text"
-                  name="clientName"
-                  value={formData.clientName}
-                  onChange={handleInputChange}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '16px'
-                  }}
-                  required
-                  placeholder="Enter client name"
-                />
-              </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                  Email
-                </label>
-                <input
-                  type="email"
-                  name="clientEmail"
-                  value={formData.clientEmail}
-                  onChange={handleInputChange}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '16px'
-                  }}
-                  required
-                  placeholder="Enter email address"
-                />
-              </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                  Phone
-                </label>
-                <input
-                  type="tel"
-                  name="clientPhone"
-                  value={formData.clientPhone}
-                  onChange={handleInputChange}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '16px'
-                  }}
-                  required
-                  placeholder="Enter phone number"
-                />
-              </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                  Address
-                </label>
-                <textarea
-                  name="clientAddress"
-                  value={formData.clientAddress}
-                  onChange={handleInputChange}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '16px',
-                    minHeight: '80px',
-                    resize: 'vertical'
-                  }}
-                  required
-                  placeholder="Enter complete address"
-                  rows="3"
-                />
-              </div>
-            </div>
-          )}
-          {/* Order Details */}
-          <div style={{ marginBottom: '30px' }}>
-            <h2 style={{
-              color: '#555',
-              fontSize: '20px',
-              marginBottom: '15px',
-              borderBottom: '2px solid #007bff',
-              paddingBottom: '5px'
-            }}>Order Details</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '20px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                  Priority
-                </label>
-                <select
-                  name="priority"
-                  value={formData.priority}
-                  onChange={handleInputChange}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '16px',
-                    backgroundColor: 'white'
-                  }}
-                  required
-                >
-                  <option value="HIGH">High</option>
-                  <option value="MEDIUM">Medium</option>
-                  <option value="LOW">Low</option>
-                </select>
-              </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                  Print Type
-                </label>
-                <select
-                  name="type"
-                  value={formData.type}
-                  onChange={handleInputChange}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '16px',
-                    backgroundColor: 'white'
-                  }}
-                  required
-                >
-                  <option value="">Select print type</option>
-                  {printTypes.map((type) => (
-                    <option key={type} value={type}>{type}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', marginBottom: '20px' }}>
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                  Start Date
-                </label>
-                <input
-                  type="datetime-local"
-                  name="startDate"
-                  value={formData.startDate}
-                  onChange={handleInputChange}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '16px'
-                  }}
-                  required
-                />
-              </div>
-              <div>
-                <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                  End Date
-                </label>
-                <input
-                  type="datetime-local"
-                  name="endDate"
-                  value={formData.endDate}
-                  onChange={handleInputChange}
-                  style={{
-                    width: '100%',
-                    padding: '12px',
-                    border: '1px solid #ddd',
-                    borderRadius: '4px',
-                    fontSize: '16px'
-                  }}
-                  required
-                />
-              </div>
-            </div>
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                Description
-              </label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '16px',
-                  minHeight: '100px',
-                  resize: 'vertical'
-                }}
-                required
-                placeholder="Describe the printing requirements"
-                rows="4"
-              />
-            </div>
-            {/* Image Upload */}
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                Upload Images (Optional)
-              </label>
-              <input
-                type="file"
-                multiple
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #ddd',
-                  borderRadius: '4px',
-                  fontSize: '16px',
-                  backgroundColor: 'white'
-                }}
-              />
-              {selectedImages.length > 0 && (
-                <div style={{ marginTop: '10px', fontSize: '14px', color: '#666' }}>
-                  Selected files: {selectedImages.map(file => file.name).join(', ')}
-                </div>
-              )}
-            </div>
-          </div>
-          {/* Print Process Steps */}
-          {formData.type && (
-            <div style={{ marginBottom: '30px' }}>
-              <h2 style={{
-                color: '#555',
-                fontSize: '20px',
-                marginBottom: '15px',
-                borderBottom: '2px solid #007bff',
-                paddingBottom: '5px'
-              }}>Print Process Steps</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px' }}>
-                {Array.from({ length: getMaxSteps() }, (_, index) => {
-                  const stepNumber = index + 1;
-                  const stepKey = `step${stepNumber}`;
-                  const options = getCurrentStepOptions(stepNumber);
-                  return (
-                    <div key={stepNumber}>
-                      <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold', color: '#555' }}>
-                        Step {stepNumber}: {getStepLabel(stepNumber)}
-                      </label>
-                      <select
-                        value={stepSelections[stepKey]}
-                        onChange={(e) => handleStepChange(stepKey, e.target.value)}
-                        style={{
-                          width: '100%',
-                          padding: '12px',
-                          border: '1px solid #ddd',
-                          borderRadius: '4px',
-                          fontSize: '16px',
-                          backgroundColor: 'white'
-                        }}
-                      >
-                        <option value="">Select {getStepLabel(stepNumber).toLowerCase()}</option>
-                        {options.map((option) => (
-                          <option key={option} value={option}>{option}</option>
-                        ))}
-                      </select>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
-          <button 
-            type="button" 
-            onClick={handleSubmit} 
-            disabled={isSubmitting}
-            style={{
-              width: '100%',
-              padding: '15px',
-              backgroundColor: isSubmitting ? '#ccc' : '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              fontSize: '18px',
-              fontWeight: 'bold',
-              cursor: isSubmitting ? 'not-allowed' : 'pointer',
-              transition: 'background-color 0.3s'
-            }}
-            onMouseOver={(e) => {
-              if (!isSubmitting) {
-                e.target.style.backgroundColor = '#0056b3';
-              }
-            }}
-            onMouseOut={(e) => {
-              if (!isSubmitting) {
-                e.target.style.backgroundColor = '#007bff';
-              }
-            }}
-          >
-            {isSubmitting ? 'Creating Order...' : 'Create Order'}
-          </button>
-        </div>
+  // --- Dynamic Options ---
+  const printTypesObj = getOptionGroups(clientTypes[0], form.order.type);
+  const optionCategories = getOptionCategories(printTypesObj, form.selectedPrintType);
+  // --- Render Option Groups ---
+  const renderOptionGroup = (group, options) => (
+    <div className={styles.optionGroup} key={group}>
+      <div className={styles.groupTitle}>{group.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase())}</div>
+      <div className={styles.optionsWrap}>
+        {options.map((option) => {
+          const selected = (form.requirementSelections[group] || []).some(
+            (x) => x.name === option
+          );
+          return (
+            <button
+              type="button"
+              className={`${styles.optionChip} ${selected ? styles.selected : ""}`}
+              key={option}
+              onClick={() => handleOptionSelect(group, option)}
+            >
+              {option}
+            </button>
+          );
+        })}
       </div>
     </div>
   );
-};
-export default OrderForm;
+  // --- UI ---
+  return (
+    <div className={styles.modalBackdrop}>
+      <div className={styles.modalBox}>
+        <div className={styles.modalHeader}>
+          <span>Add New Post-Sale</span>
+          <button className={styles.closeButton} onClick={onClose}>
+            <X size={20} />
+          </button>
+        </div>
+        <form className={styles.modalBody} onSubmit={handleFormSubmit} autoComplete="off">
+          {/* Old Client toggle */}
+          <div className={styles.clientTypeRow}>
+            <label>
+              <input
+                type="checkbox"
+                name="isOldClient"
+                checked={form.isOldClient}
+                onChange={handleInputChange}
+              />
+              Old Client?
+            </label>
+          </div>
+          {form.isOldClient ? (
+            <div className={styles.inputRow}>
+              <label>Select Existing Client</label>
+              <select name="clientId" value={form.clientId} onChange={handleInputChange}>
+                <option value="">Select Client</option>
+                {clients.map((c) => (
+                  <option value={c.id} key={c.id}>{c.name} ({c.email})</option>
+                ))}
+              </select>
+            </div>
+          ) : (
+            <>
+              <div className={styles.inputRow}>
+                <label>Client Name</label>
+                <input name="client.name" value={form.client.name} onChange={handleInputChange} required />
+              </div>
+              <div className={styles.inputRow}>
+                <label>Email</label>
+                <input type="email" name="client.email" value={form.client.email} onChange={handleInputChange} required />
+              </div>
+              <div className={styles.inputRow}>
+                <label>Phone</label>
+                <input name="client.phone" value={form.client.phone} onChange={handleInputChange} required />
+              </div>
+              <div className={styles.inputRow}>
+                <label>Address</label>
+                <input name="client.address" value={form.client.address} onChange={handleInputChange} />
+              </div>
+              <div className={styles.inputRow}>
+                <label>GST Certificate</label>
+                <input name="client.GSTCertificate" value={form.client.GSTCertificate} onChange={handleInputChange} />
+              </div>
+              <div className={styles.inputRow}>
+                <label>PAN</label>
+                <input name="client.PAN" value={form.client.PAN} onChange={handleInputChange} />
+              </div>
+            </>
+          )}
+          {/* Order Details */}
+          <div className={styles.inputRow}>
+            <label>Estimated Quote</label>
+            <input type="number" name="estimatedQuote" value={form.estimatedQuote} onChange={handleInputChange} required />
+          </div>
+          <div className={styles.inputRow}>
+            <label>Negotiation Price</label>
+            <input type="number" name="negotiationPrice" value={form.negotiationPrice} onChange={handleInputChange} required />
+          </div>
+          <div className={styles.inputRow}>
+            <label>Final Amount (No GST)</label>
+            <input type="number" name="finalAmtWithOutGST" value={form.finalAmtWithOutGST} onChange={handleInputChange} required />
+          </div>
+          <div className={styles.inputRow}>
+            <label>GST %</label>
+            <input type="number" name="gstPercentage" value={form.gstPercentage} onChange={handleInputChange} min={0} max={28} />
+          </div>
+          <div className={styles.inputRow}>
+            <label>Remark</label>
+            <input name="remark" value={form.remark} onChange={handleInputChange} />
+          </div>
+          {/* Order Date/Status */}
+          <div className={styles.inputRow}>
+            <label>Status</label>
+            <select name="order.status" value={form.order.status} onChange={handleInputChange}>
+              <option value="CREATED">Created</option>
+              <option value="IN_PROGRESS">In Progress</option>
+              <option value="COMPLETED">Completed</option>
+              <option value="CANCELLED">Cancelled</option>
+            </select>
+          </div>
+          <div className={styles.inputRow}>
+            <label>Priority</label>
+            <select name="order.priority" value={form.order.priority} onChange={handleInputChange}>
+              <option value="HIGH">High</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="LOW">Low</option>
+            </select>
+          </div>
+          <div className={styles.inputRow}>
+            <label>Order Start Date</label>
+            <input type="datetime-local" name="order.startDate" value={form.order.startDate} onChange={handleInputChange} />
+          </div>
+          <div className={styles.inputRow}>
+            <label>Order End Date</label>
+            <input type="datetime-local" name="order.endDate" value={form.order.endDate} onChange={handleInputChange} />
+          </div>
+          {/* --- PRINT TYPE AND REQUIREMENTS --- */}
+          <div className={styles.optionsSection}>
+            <div className={styles.optionGroup}>
+              <div className={styles.groupTitle}>Select Print Type</div>
+              <div className={styles.optionsWrap}>
+                {Object.keys(printTypesObj).map((pt) => (
+                  <button
+                    key={pt}
+                    type="button"
+                    className={`${styles.optionChip} ${form.selectedPrintType === pt ? styles.selected : ""}`}
+                    onClick={() => handlePrintTypeOptionSelect(pt)}
+                  >
+                    {pt}
+                  </button>
+                ))}
+              </div>
+            </div>
+            {form.selectedPrintType &&
+              Object.entries(optionCategories).map(([group, options]) =>
+                renderOptionGroup(group, options)
+              )}
+          </div>
+          <div className={styles.inputRow}>
+            <label>Requirement (auto-filled)</label>
+            <input
+              name="requirements"
+              value={form.requirements}
+              onChange={handleInputChange}
+              placeholder="Selected options will appear here"
+              readOnly
+              style={{ background: "#f5f5fa" }}
+            />
+          </div>
+          {/* Attachments */}
+          <div className={styles.inputRow}>
+            <label>Attach Images/Files</label>
+            <input
+              type="file"
+              name="imageFiles"
+              onChange={handleInputChange}
+              multiple
+              accept="image/*"
+            />
+          </div>
+          {/* Submit */}
+          <div className={styles.modalActions}>
+            <button
+              type="button"
+              onClick={onClose}
+              className={styles.cancelBtn}
+            >
+              Cancel
+            </button>
+            <button type="submit" className={styles.submitBtn}>
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}

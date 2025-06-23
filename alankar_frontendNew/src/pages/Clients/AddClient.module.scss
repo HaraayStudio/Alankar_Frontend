@@ -1,0 +1,156 @@
+.mainAddClientDiv {
+  width: 100%;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.headerBox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+  background: linear-gradient(89deg, #D7B3FF -39.46%, #C5DCFF 103.31%);
+  .buttonDiv {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    gap: 20px;
+    border-radius: 30px;
+    background: rgba(4, 4, 4, 0.06);
+    backdrop-filter: blur(5.5px);
+    .backButton {
+      display: flex;
+      padding: 10px 20px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: 30px;
+      background: var(--Colour-White-01, #FFF);
+      color: var(--Colour-Heading, #030304);
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 150%;
+      transition: background 0.2s, color 0.2s;
+      &:hover {
+        background: #c7dcfa;
+        color: #022b6c;
+      }
+    }
+    .activeButton {
+      background: var(--Colour-1st-Colour, #0584FE);
+      color: #fff;
+      pointer-events: none;
+      font-weight: 500;
+    }
+  }
+}
+.formDiv {
+  margin-top: 30px;
+  width: 100%;
+//   max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 26px;
+  background: var(--Colour-White-01, #FFF);
+  box-shadow: 0px 2px 20px 0px rgba(4, 4, 4, 0.06);
+  padding: 38px 32px 32px 32px;
+  h2 {
+    color: var(--Colour-Heading, #030304);
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    text-align: left;
+    width: 100%;
+    margin-bottom: 18px;
+  }
+}
+.formGrid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  .row {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    .col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      label {
+        color: var(--Colour-Heading, #030304);
+        font-family: Arial, sans-serif;
+        font-size: 17px;
+        font-weight: 500;
+        margin-left: 7px;
+        margin-bottom: 2px;
+      }
+      input,
+      textarea {
+        display: flex;
+        padding: 13px 20px;
+        border-radius: 20px;
+        border: 1px solid #B0B0B0;
+        background-color: #ffffff;
+        font-size: 15px;
+        font-family: Arial, sans-serif;
+        resize: none;
+        &:focus {
+          border-color: #0584FE;
+          background: #fff;
+        }
+      }
+      textarea {
+        resize: vertical;
+        min-height: 45px;
+        max-height: 130px;
+      }
+    }
+  }
+  button[type="submit"] {
+    margin: 18px auto 0 auto;
+    padding: 12px 34px;
+    border-radius: 30px;
+    background: var(--Colour-1st-Colour, #0584FE);
+    color: #fff;
+    font-weight: 600;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.18s;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    &:hover {
+      background: #174291;
+    }
+    &:disabled {
+      background: #8ba9ea;
+      cursor: not-allowed;
+    }
+  }
+}
+.message {
+  margin-top: 16px;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  font-weight: 500;
+  text-align: center;
+}
+@media (max-width: 700px) {
+  .formDiv {
+    padding: 18px 8px 20px 8px;
+    max-width: 98vw;
+  }
+  .formGrid .row {
+    flex-direction: column;
+    gap: 9px;
+  }
+}

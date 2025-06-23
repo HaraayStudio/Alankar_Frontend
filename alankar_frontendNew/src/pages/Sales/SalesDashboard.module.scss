@@ -1,0 +1,286 @@
+// .salesDashboardMain {
+//   width: 100%;
+//   min-height: 100vh;
+//   background: #f6f9ff;
+//   padding: 34px 18px 18px 18px;
+//   font-family: "Inter", Arial, sans-serif;
+// }
+// .grid {
+//   display: grid;
+//   grid-template-areas:
+//     "total highest"
+//     "summary actives"
+//     "recent recent";
+//   grid-template-columns: 2.1fr 1.1fr;
+//   grid-template-rows: 130px 210px 1fr;
+//   gap: 22px;
+//   max-width: 1500px;
+//   margin: 0 auto;
+// }
+// // Card Base
+// .totalSalesCard, .highestSalesCard, .salesSummaryCard, .activeSalesCard, .recentSalesCard {
+//   border-radius: 24px;
+//   background: #fff;
+//   box-shadow: 0 4px 18px 0 rgba(41, 121, 255, 0.08);
+//   padding: 22px 26px 20px 24px;
+// }
+// .totalSalesCard { grid-area: total; }
+// .highestSalesCard {
+//   grid-area: highest;
+//   background: linear-gradient(97deg, #192b42 60%, #214e7c 100%);
+//   color: #fff;
+//   position: relative;
+//   box-shadow: 0 4px 20px 0 rgba(30, 60, 140, 0.13);
+// }
+// .salesSummaryCard { grid-area: summary; }
+// .activeSalesCard { grid-area: actives; }
+// .recentSalesCard { grid-area: recent; min-height: 220px; }
+// // Progress Bars & Filters
+// .progressBarTrack {
+//   height: 9px;
+//   background: #e6edff;
+//   border-radius: 7px;
+//   margin-bottom: 9px;
+//   overflow: hidden;
+//   width: 85%;
+//   margin-left: 6px;
+// }
+// .progressBarPre { height: 100%; background: #2979ff; }
+// .progressBarPost { height: 100%; background: #0e253d; }
+// .progressBarLabel {
+//   display: flex; justify-content: space-between;
+//   font-size: 13px; color: #7a91b5; margin-top: 5px;
+// }
+// .timeFilter, .timeFilter2, .timeFilter3 {
+//   position: absolute; top: 14px; right: 19px;
+//   background: #f4f7fd;
+//   color: #367efb; font-weight: 600; font-size: 14px;
+//   border-radius: 13px; padding: 2px 18px;
+// }
+// // Highest Sales Card
+// .highestTitle { font-size: 1.11rem; font-weight: 600; margin-bottom: 5px; }
+// .highestLabel {
+//   margin-top: -22px; display: flex; align-items: center; gap: 11px; font-size: 1.5rem; font-weight: 700;
+// }
+// .highestUp {
+//   display: flex; align-items: center; gap: 3px; color: #21bb6f; font-size: 1.12rem;
+// }
+// .highestTime { position: absolute; top: 17px; right: 18px; background: #16294e; color: #60a3fc; border-radius: 13px; padding: 1px 16px; font-weight: 600; }
+// // Sales Table
+// .salesTable {
+//   width: 100%; border-spacing: 0; margin-top: 8px;
+//   th { background: #f3f8ff; font-weight: 600; color: #405e94; font-size: 15px; padding: 8px 10px; border-bottom: 2px solid #e9ecf3;}
+//   td { font-size: 15px; color: #112144; padding: 8px 10px; }
+//   tr:not(:last-child) td { border-bottom: 1px solid #eef1f7; }
+// }
+// .salesTableFilter { display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 9px;}
+// .salesTableTag { background: #eef4fe; color: #2979ff; border-radius: 11px; padding: 2px 16px; font-size: 13px; }
+// .salesTableMonth { background: #f5f7fa; color: #678edb; border-radius: 11px; padding: 2px 13px; font-size: 13px; }
+// .sectionTitle {
+//   font-size: 1.13rem; font-weight: 700; color: #173875; margin-bottom: 8px;
+// }
+// .activeSalesLegend {
+//   display: flex; align-items: center; gap: 8px; margin: 5px 0;
+//   .legendPre { width: 16px; height: 6px; background: #2979ff; border-radius: 2px;}
+//   .legendPost { width: 16px; height: 6px; background: #0e253d; border-radius: 2px;}
+// }
+// .activeSalesPercents { display: flex; justify-content: space-between; font-size: 13px; color: #555; margin-top: 4px; }
+// .channelIcon { font-size: 13.5px; }
+// @media (max-width: 1050px) {
+//   .grid { grid-template-columns: 1fr; grid-template-areas: "total" "highest" "summary" "actives" "recent"; }
+// }
+// @media (max-width: 700px) {
+//   .salesDashboardMain { padding: 10px 2vw; }
+//   .grid { gap: 12px; }
+//   .totalSalesCard, .highestSalesCard, .salesSummaryCard, .activeSalesCard, .recentSalesCard { padding: 13px 6px 14px 12px; border-radius: 13px; }
+// }
+// ::-webkit-scrollbar { width: 8px; background: #f4f7fd; }
+// ::-webkit-scrollbar-thumb { background: #d7e2ff; border-radius: 6px;}
+// src/pages/SalesDashboard.module.scss
+:root {
+  --blue: #2979ff;
+  --blue-dark: #191b24;
+  --blue-faded: #eaf2ff;
+  --white: #fff;
+  --gray-bg: #f6f9ff;
+  --gray-table: #f3f8ff;
+  --text: #191b24;
+  --glass: rgba(255,255,255,0.63);
+}
+.dashboard {
+  // width: vw;
+  // max-width: 80%;
+  min-height: 100vh;
+  background: var(--gray-bg);
+  padding: 30px 0 26px 0;
+  display: flex; flex-direction: column; align-items: center;
+  font-family: "Inter", Arial, sans-serif;
+}
+.grid {
+  display: grid;
+  grid-template-areas:
+    "total highest"
+    "summary actives"
+    "recent recent";
+  grid-template-columns: 2.0fr 1.09fr;
+  grid-template-rows: 205px 215px 1fr;
+  gap: 24px;
+  max-width: 98%;
+  // width: 100vw;
+  margin: 0 auto;
+}
+.card {
+  border-radius: 20px;
+  background: var(--glass);
+  box-shadow: 0 6px 28px 0 rgba(60,110,190,0.10);
+  padding: 22px 26px 20px 26px;
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow 0.23s;
+  &:hover { box-shadow: 0 10px 36px 0 rgba(60,110,190,0.13);}
+}
+.totalSales { grid-area: total; min-width: 0; background: var(--white);}
+.highestSales { grid-area: highest; background: linear-gradient(97deg, #192b42 62%, #214e7c 100%); color: #fff;}
+.salesSummary { grid-area: summary;}
+.activeSales { grid-area: actives;}
+.recentSales { grid-area: recent; min-height: 230px;}
+// Cards - Header/Tags
+.cardHead, .cardHeadDark {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 1.13rem; font-weight: 700; margin-bottom: 5px;
+}
+.cardHeadDark { color: #fff; }
+.timeTag, .timeTagDark {
+  background: #f5f7fa;
+  color: #337efc;
+  font-weight: 600;
+  font-size: 13.7px;
+  border-radius: 12px;
+  padding: 2px 15px;
+  margin-left: 10px;
+  letter-spacing: 0.02em;
+}
+.timeTagDark {
+  background: #22304c;
+  color: #b8d6ff;
+}
+.amount {
+  font-size: 2.18rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--text);
+  margin: 0 0 10px 0;
+}
+// Total sales bars
+.barLabels { display: flex; gap: 22%; margin: 5px 0 0 2px; color: #7a91b5; font-size: 14px;}
+.barWrap { margin: 6px 0 0 2px;}
+.progressBarBg {
+  width: 95%; height: 13px; background: #eaf0fb; border-radius: 9px; margin-bottom: 11px; position: relative;
+  box-shadow: 0 1px 6px 0 rgba(41,121,255,0.05);
+}
+.progressBarPre {
+  height: 100%;
+  background: linear-gradient(91deg, #57a2ff 45%, #2979ff 100%);
+  border-radius: 9px;
+  transition: width 0.7s cubic-bezier(.6,1,.6,1);
+  display: flex; align-items: center; justify-content: flex-end;
+  span { font-size: 13.5px; font-weight: 600; color: #fff; margin-right: 9px;}
+}
+.progressBarPost {
+  height: 100%;
+  background: linear-gradient(91deg, #2e3c5d 55%, #191b24 100%);
+  border-radius: 9px;
+  transition: width 0.7s cubic-bezier(.6,1,.6,1);
+  display: flex; align-items: center; justify-content: flex-end;
+  span { font-size: 13.5px; font-weight: 600; color: #fff; margin-right: 9px;}
+}
+// Highest sales
+.highestStats {
+  display: flex; align-items: center; gap: 18px; margin-top: 0; font-weight: 600;
+  div:first-child { font-size: 1.15rem; font-weight: 800;}
+}
+.upTag { display: flex; align-items: center; color: #11e18e; font-size: 14px; font-weight: 600; gap:3px; }
+// Chart Tooltip
+.chartTooltip {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 20px #dadfff33;
+  padding: 8px 15px 6px 15px;
+  color: #2b2c40;
+  font-size: 14.1px;
+  font-weight: 600;
+  border: 1.5px solid #e4eafd;
+  > div { margin-bottom: 1px;}
+  span { color: #337efc; font-weight: 700;}
+}
+// Legend
+.legendRow {
+  margin: 9px 0 0 0; display: flex; align-items: center; gap: 13px; font-size: 14px; color: #7a91b5;
+}
+.legendDot {
+  width: 11px; height: 11px; border-radius: 6px; display: inline-block; margin-right: 4px;
+}
+.percentTag, .percentTag2 {
+  background: #eaf2ff; color: #2979ff;
+  font-weight: 700; font-size: 13px;
+  border-radius: 8px; padding: 2.5px 10px; margin-left: 8px;
+}
+.percentTag2 {
+  background: #e9eafd; color: #191b24;
+}
+// Table
+.salesTable {
+  margin-top: 11px;
+  width: 100%;
+  background: var(--gray-table);
+  border-radius: 13px;
+  box-shadow: 0 1px 5px #aacaf026;
+  th, td {
+    text-align: left;
+    padding: 11px 9px;
+    font-size: 15px;
+    color: #222;
+    white-space: nowrap;
+    border-bottom: 1.2px solid #e5eafd;
+  }
+  th { font-weight: 700; color: #5076ad; font-size: 15.2px;}
+  tbody tr:last-child td { border-bottom: none;}
+  td { font-weight: 500;}
+}
+.filtersRow {
+  display: flex; align-items: center; gap: 12px;
+}
+.salesType {
+  background: #eaf2ff; color: #2979ff; font-weight: 600; font-size: 13px; padding: 2px 13px; border-radius: 11px;
+  margin-right: 2px;
+}
+// Responsive
+@media (max-width: 1220px){
+  .grid { max-width: 99vw; }
+  .recentSales { padding: 12px 5px 14px 5px; }
+}
+@media (max-width: 900px){
+  .grid {
+    grid-template-areas:
+      "total"
+      "highest"
+      "summary"
+      "actives"
+      "recent";
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(5, minmax(120px,auto));
+    gap: 18px;
+    padding: 1vw 3vw;
+  }
+  .card { padding: 15px 7px 13px 11px;}
+  .salesTable th, .salesTable td { font-size: 13.5px; padding: 7px 5px;}
+}
+::-webkit-scrollbar {
+  width: 8px; height: 8px;
+  background: #f7f8fa;
+  border-radius: 7px;
+}
+::-webkit-scrollbar-thumb {
+  background: #eaf2ff;
+  border-radius: 8px;
+}

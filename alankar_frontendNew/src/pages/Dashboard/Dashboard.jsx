@@ -137,7 +137,7 @@ export default function Dashboard() {
               <div className={styles.clientDetails}>
                 <div className={styles.clientInfoHeader}>
                   <h3>{selectedClient.name}</h3>
-                  <span className={styles.ordersCount}>{selectedClient.orders.length} Orders</span>
+                  {/* <span className={styles.ordersCount}>{selectedClient.orders.length} Orders</span> */}
                 </div>
                 <div className={styles.clientContact}>
                   <div className={styles.contactItem}>
@@ -263,7 +263,6 @@ export default function Dashboard() {
     </div>
     </div>
     <div className={styles.sec3}>
-      <img src={accounts} alt="" />
     </div>
    </div>
   )

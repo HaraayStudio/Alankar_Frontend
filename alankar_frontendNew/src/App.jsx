@@ -16,7 +16,6 @@ import ProjectHistory from './pages/Projects/ProjectHistory.jsx';
 import Clients from './pages/Clients/Clients.jsx';
 import AddClient from './pages/Clients/AddClient.jsx';
 import AllClients from './pages/Clients/AllClients.jsx';
-import Billing from './pages/Clients/Billing.jsx';
 import Account from './pages/Account/Account.jsx';
 import Employee from './pages/Employee/Employee.jsx';
 import AddEmployee from './pages/Employee/AddEmployee.jsx';
@@ -25,6 +24,8 @@ import MainLayout from "./pages/Mainlayout.jsx";
 import SalesDashboard from "./pages/Sales/SalesDashbaord.jsx";
 import PreSale from "./pages/Sales/PreSale.jsx";
 import PostSale from "./pages/Sales/PostSale.jsx";
+import EditPrintPrices from "./pages/Prices/EditPrintPrices.jsx";
+import GSTPlansBilling from "./pages/Clients/GSTPlansBilling.jsx";
 // ✅ PrivateRoute component to protect routes
 const PrivateRoute = ({ children }) => {
   const { authToken } = useContext(DataContext);
@@ -45,6 +46,7 @@ const AppRoutes = () => {
           </PrivateRoute>
         }
       >
+        <Route path="/price" element={<EditPrintPrices />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="projects" element={<Projects />} />
         <Route path="projects/new" element={<AddProject />} />
@@ -53,7 +55,7 @@ const AppRoutes = () => {
         <Route path="clients" element={<Clients />} />
         <Route path="clients/new" element={<AddClient />} />
         <Route path="clients/list" element={<AllClients />} />
-        <Route path="clients/billing" element={<Billing />} />
+        <Route path="clients/billing" element={<GSTPlansBilling />} />
         <Route path="account" element={<Account />} />
         <Route path="employee" element={<Employee />} />
         <Route path="employee/new" element={<AddEmployee />} />

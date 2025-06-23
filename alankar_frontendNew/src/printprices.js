@@ -1,7 +1,7 @@
 const PRINT_PRICES = {
   clientTypes: {
     Cash: {
-      orderTypes: {
+     orderTypes: {
         "Wide format printing": {
           printTypes: {
             "Eco solvent": {
@@ -351,7 +351,6 @@ const PRINT_PRICES = {
       }
     },
     Printers: {
-      // Same structure as above; fill as per your price.
      orderTypes: {
         "Wide format printing": {
           printTypes: {

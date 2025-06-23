@@ -1,0 +1,177 @@
+.wrapper {
+  max-width: 680px;
+  margin: 40px auto 32px;
+  padding: 32px 22px 26px 22px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 48px 0 rgba(44,91,255,0.09), 0 1px 2px rgba(24,44,144,0.06);
+}
+h2 {
+  font-weight: 700;
+  text-align: center;
+  color: #1759e7;
+  letter-spacing: 0.01em;
+  margin-bottom: 18px;
+}
+.selectBar {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  background: #f6f9ff;
+  border-radius: 13px;
+  padding: 18px 13px;
+  box-shadow: 0 1px 8px rgba(49,107,255,0.05);
+}
+.selectItem {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 128px;
+  label {
+    font-size: 0.97rem;
+    color: #2460f8;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin-bottom: 1px;
+  }
+  select {
+    background: #fff;
+    border: 1.5px solid #e0ebfa;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 1rem;
+    font-family: inherit;
+    color: #1244b8;
+    box-shadow: 0 0.5px 2.5px rgba(47,80,180,0.08);
+    outline: none;
+    transition: border 0.16s;
+    &:focus { border-color: #1759e7; }
+    &:disabled { background: #f3f6fa; color: #92a7d7; }
+  }
+}
+.card {
+  background: #f9fbff;
+  border: 1.5px solid #e5ebf7;
+  border-radius: 15px;
+  margin-top: 14px;
+  box-shadow: 0 2px 9px 0 rgba(27,66,179,0.07);
+  padding: 24px 17px 20px 17px;
+}
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.09rem;
+  font-weight: 600;
+  color: #205ae8;
+  margin-bottom: 13px;
+}
+.saveBtn {
+  background: linear-gradient(95deg, #205ae8 0, #23b0ff 90%);
+  color: #fff;
+  border: none;
+  font-size: 1rem;
+  border-radius: 8px;
+  padding: 7px 26px;
+  font-weight: 700;
+  box-shadow: 0 0.7px 2.5px rgba(44,91,255,0.07);
+  cursor: pointer;
+  transition: background 0.18s;
+  &:hover {
+    background: linear-gradient(90deg, #23b0ff 0, #205ae8 100%);
+  }
+}
+.optionsTable {
+  width: 100%;
+  margin-top: 6px;
+}
+.tableHead {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: #205ae8;
+  margin-bottom: 6px;
+  font-size: 1rem;
+  border-bottom: 1px solid #e3ecff;
+  padding-bottom: 4px;
+}
+.optionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.input {
+  border: 1.3px solid #e0ebfa;
+  border-radius: 7px;
+  background: #fff;
+  color: #174099;
+  font-size: 0.99rem;
+  padding: 5px 8px;
+  transition: border 0.15s;
+  min-width: 96px;
+  &:focus {
+    border-color: #23b0ff;
+    background: #f3f8ff;
+    color: #0a4fa0;
+  }
+}
+.delBtn {
+  background: none;
+  border: none;
+  color: #e12b44;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 3px;
+  border-radius: 5px;
+  padding: 2px 7px;
+  transition: background 0.13s, color 0.14s;
+  &:hover {
+    background: #ffe5e5;
+    color: #ae0029;
+  }
+}
+.addBtn {
+  background: linear-gradient(90deg,#206af7 0,#23b0ff 100%);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-size: 1.05rem;
+  padding: 3.5px 14px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-left: 3px;
+  transition: background 0.15s;
+  &:hover {
+    background: linear-gradient(90deg, #23b0ff 0, #205ae8 100%);
+  }
+}
+.hint {
+  margin: 35px 0 0 0;
+  padding: 20px 16px;
+  background: #f7faff;
+  border-radius: 9px;
+  color: #4686e4;
+  text-align: center;
+  font-size: 1.13rem;
+  border: 1.2px dashed #e1edff;
+}
+@media (max-width: 700px) {
+  .wrapper {
+    padding: 13px 3vw;
+    border-radius: 10px;
+  }
+  .card {
+    padding: 10px 5px;
+    border-radius: 8px;
+  }
+  .selectBar {
+    gap: 7px;
+    padding: 8px 5px;
+  }
+  .input { min-width: 65px; font-size: .97rem;}
+  .tableHead, .cardHeader { font-size: 0.97rem;}
+}

@@ -12,12 +12,12 @@ const axiosInstance = axios.create({
 });
 // ✅ API functions
 export const createClient = (order, isOldClient, token) =>
-  axiosInstance.post('/orders/createorder', order, {
+  axiosInstance.post('/clients/createclient', order, {
     params: { isOldClient },
     headers: { Authorization: `Bearer ${token}` }
   });
 export const getClientById = (id, token) =>
-  axiosInstance.get(`/orders/${id}`, {
+  axiosInstance.get(`/clients/${id}`, {
     headers: { Authorization: `Bearer ${token}` }
   });
 export const getAllClients = (token) =>

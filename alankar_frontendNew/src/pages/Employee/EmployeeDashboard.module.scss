@@ -1,0 +1,320 @@
+// :root {
+//   --blue: #2979ff;
+//   --blue-dark: #173c7d;
+//   --blue-light: #eaf2ff;
+//   --bg: #f6faff;
+//   --card: #fff;
+//   --glass: rgba(233,242,255,0.54);
+//   --border: #e5ecfa;
+//   --text-main: #181c32;
+//   --text-muted: #7e8ba5;
+//   --success: #21bb6f;
+//   --pending: #ffb300;
+//   --danger: #ff5252;
+// }
+// .dashRoot {
+//   width: 100%;
+//   min-height: 100vh;
+//   background: var(--bg);
+//   padding: 28px 0 32px 0;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 38px;
+// }
+// // --- Top Card
+// .topCardWrap {
+//   width: 99.5%;
+//   margin: 0 auto 18px auto;
+//   background: var(--card);
+//   border-radius: 22px;
+//   box-shadow: 0 6px 32px 0 rgba(41, 121, 255, 0.08);
+//   padding: 28px 24px 14px 24px;
+//   display: grid;
+//   grid-template-columns: 32% 36% 1fr;
+//   gap: 24px;
+//   align-items: start;
+//   @media (max-width: 900px) {
+//     grid-template-columns: 1fr;
+//     gap: 12px;
+//     padding: 14px 6vw;
+//   }
+// }
+// .topCardMain {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 8px;
+// }
+// .topCardLabel {
+//   font-size: 20px;
+//   color: var(--text-main);
+//   font-weight: 700;
+//   letter-spacing: 0.01em;
+// }
+// .topCardDate {
+//   font-size: 13.2px;
+//   color: var(--text-muted);
+//   margin-top: 1px;
+// }
+// .topCardAmt {
+//   font-size: 2.4rem;
+//   font-weight: 800;
+//   letter-spacing: 0.01em;
+//   color: var(--blue-dark);
+//   margin: 7px 0 3px 0;
+// }
+// .growthTag {
+//   display: inline-flex;
+//   align-items: center;
+//   font-size: 15px;
+//   background: #eaf6f3;
+//   color: var(--success);
+//   padding: 2.5px 14px;
+//   border-radius: 12px;
+//   margin-left: 7px;
+//   font-weight: 600;
+//   svg { margin-right: 4px; }
+// }
+// .monthDropdown {
+//   background: #f6f8fa;
+//   border-radius: 17px;
+//   color: #2979ff;
+//   font-weight: 600;
+//   padding: 6px 15px 6px 13px;
+//   width: fit-content;
+//   margin-top: 13px;
+//   border: 1px solid #e3ebfa;
+//   font-size: 15.5px;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   gap: 6px;
+//   &:hover { background: #eaf2ff; }
+// }
+// .topCardChartBox {
+//   width: 100%;
+//   min-width: 220px;
+//   padding: 0 8px;
+//   background: linear-gradient(180deg, #eaf2ff 63%, #d7eaff 100%);
+//   border-radius: 20px;
+//   box-shadow: 0 2px 15px rgba(41, 121, 255, 0.07);
+//   margin-bottom: 10px;
+//   @media (max-width: 900px) { min-width: 140px; }
+// }
+// .chartTooltip {
+//   background: #fff;
+//   border-radius: 13px;
+//   box-shadow: 0 6px 26px #cbe3ff34;
+//   padding: 10px 16px;
+//   font-size: 15.3px;
+//   font-weight: 600;
+//   color: #1e283b;
+//   pointer-events: none;
+// }
+// // --- Top mini cards
+// .topCardStatsRow {
+//   display: flex;
+//   gap: 18px;
+//   @media (max-width: 900px) { flex-direction: column; gap: 7px; }
+// }
+// .miniStatCard {
+//   background: #f8faff;
+//   border-radius: 18px;
+//   box-shadow: 0 2px 10px #d3ebff12;
+//   padding: 13px 23px 14px 17px;
+//   min-width: 195px;
+//   flex: 1 1 140px;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 7px;
+//   font-size: 15.6px;
+//   .statAmt { font-size: 20.7px; font-weight: 700; color: var(--blue); }
+//   .statFoot {
+//     color: var(--text-muted);
+//     font-size: 13.1px;
+//     margin-top: 3px;
+//     span {
+//       font-weight: 600;
+//       margin-right: 5px;
+//       &.growUp { color: var(--success); }
+//       &.growDown { color: #fa4e54; }
+//     }
+//   }
+// }
+// // --- Bottom Grid
+// .bottomGrid {
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   gap: 30px;
+//   width: 99.5%;
+//   margin: 0 auto;
+//   @media (max-width: 900px) {
+//     grid-template-columns: 1fr;
+//     gap: 20px;
+//     padding: 0 6vw;
+//   }
+// }
+// // --- All Employees Card
+// .allEmployeesCard {
+//   background: var(--card);
+//   border-radius: 18px;
+//   box-shadow: 0 6px 26px #dbeaff13;
+//   padding: 20px 26px 21px 22px;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 18px;
+//   min-height: 350px;
+// }
+// .cardHeader {
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+//   color: var(--text-main);
+//   font-size: 19px;
+//   font-weight: 700;
+//   margin-bottom: 7px;
+// }
+// .selectDropdown {
+//   background: #f3f8ff;
+//   border-radius: 12px;
+//   color: #2979ff;
+//   font-weight: 600;
+//   padding: 5px 14px 5px 11px;
+//   font-size: 14.2px;
+//   cursor: pointer;
+//   display: flex;
+//   align-items: center;
+//   gap: 5px;
+//   border: 1px solid #e5ecfa;
+//   &:hover { background: #eaf2ff; }
+// }
+// .empBigStat {
+//   font-size: 2.2rem;
+//   font-weight: 800;
+//   color: var(--blue-dark);
+//   display: flex;
+//   align-items: center;
+//   gap: 13px;
+// }
+// .tabBtns {
+//   display: flex;
+//   gap: 12px;
+//   margin-bottom: 7px;
+//   .tabBtnActive {
+//     background: var(--blue);
+//     color: #fff;
+//     font-weight: 700;
+//     border-radius: 17px;
+//     padding: 7px 27px;
+//     border: none;
+//     box-shadow: 0 3px 13px #cce1ff29;
+//   }
+//   button {
+//     background: #f5f7fa;
+//     color: #5a6c9b;
+//     border-radius: 17px;
+//     padding: 7px 27px;
+//     border: none;
+//     font-weight: 600;
+//     cursor: pointer;
+//     font-size: 16px;
+//     &:hover { background: #eaf2ff; }
+//   }
+// }
+// .activeEmpList {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 14px;
+//   margin-top: 3px;
+// }
+// .empListItem {
+//   display: flex;
+//   align-items: center;
+//   gap: 13px;
+//   background: #f7faff;
+//   border-radius: 12px;
+//   box-shadow: 0 2px 8px #e3f2ff24;
+//   padding: 7px 15px;
+// }
+// .avatarCircle {
+//   width: 42px;
+//   height: 42px;
+//   background: linear-gradient(145deg, #e9f2ff 70%, #c4e1ff 100%);
+//   color: #2257af;
+//   border-radius: 50%;
+//   font-size: 1.41rem;
+//   font-weight: 800;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   letter-spacing: 0.01em;
+//   border: 2px solid #eaf2ff;
+//   margin-right: 2px;
+// }
+// .empName {
+//   font-weight: 700;
+//   font-size: 16.2px;
+//   color: var(--blue-dark);
+// }
+// .empDate {
+//   font-size: 13.1px;
+//   color: #9db6e2;
+//   font-weight: 600;
+//   margin-top: 2px;
+// }
+// .empAmt {
+//   font-weight: 700;
+//   color: #3474f6;
+//   font-size: 15.5px;
+//   margin-left: auto;
+//   margin-right: 8px;
+// }
+// .statusChip {
+//   font-size: 14px;
+//   font-weight: 700;
+//   border-radius: 14px;
+//   padding: 5px 13px;
+//   &.completed { background: #e3ffe9; color: var(--success); }
+//   &.pending { background: #fff5c4; color: #b8a41d; }
+// }
+// .seeAll {
+//   text-align: right;
+//   margin-top: 6px;
+//   a {
+//     color: var(--blue);
+//     font-weight: 700;
+//     font-size: 14.2px;
+//     text-decoration: none;
+//     &:hover { text-decoration: underline; }
+//   }
+// }
+// // --- Recruitment Growth Card
+// .recruitGrowthCard {
+//   background: var(--card);
+//   border-radius: 18px;
+//   box-shadow: 0 6px 26px #dbeaff13;
+//   padding: 20px 26px 21px 22px;
+//   display: flex;
+//   flex-direction: column;
+//   min-height: 350px;
+//   .cardHeader {
+//     margin-bottom: 11px;
+//   }
+// }
+// .recruitGrowthChartWrap {
+//   width: 100%;
+//   height: 180px;
+//   margin-top: 10px;
+//   background: linear-gradient(180deg, #eaf2ff 67%, #d7eaff 100%);
+//   border-radius: 17px;
+//   box-shadow: 0 2px 13px #cbe3ff1c;
+//   padding: 10px 4px 8px 0;
+// }
+// // --- Responsive
+// @media (max-width: 600px) {
+//   .dashRoot { padding: 4vw 1vw; }
+//   .topCardWrap, .bottomGrid { width: 99vw; }
+//   .allEmployeesCard, .recruitGrowthCard { padding: 13px 6vw; }
+//   .empBigStat { font-size: 1.5rem; }
+//   .empName { font-size: 15px; }
+//   .miniStatCard { min-width: 100px; font-size: 13px; }
+// }

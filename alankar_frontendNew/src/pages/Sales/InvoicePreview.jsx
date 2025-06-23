@@ -316,9 +316,14 @@ export default function InvoicePreview({ postsale, onClose }) {
             </div>
           )}
           {/* Remarks */}
-          <div className={styles.remarksRow}>
-            <b>Remarks:</b> {remark}
-          </div>
+        <div className={styles.remarksRow}  style={{ display: 'flex', alignItems: 'center' , justifyContent: 'space-between' }}>
+  <b>Scan to Pay:</b>
+  <img 
+    src={`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(remark)}`} 
+    alt="QR Code for Remarks" 
+    style={{ marginLeft: '10px', height: '100px' }} 
+  />
+</div>
           {/* Bank & TnC Row */}
           <div className={styles.bottomRow}>
             <div className={styles.bankDetails}>

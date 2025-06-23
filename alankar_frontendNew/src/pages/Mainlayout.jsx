@@ -44,7 +44,7 @@ const sidebarItems = [
     ),
     hasSubmenu: true,
     submenu: [
-      { name: "All Orders", path: "/projects", key: "projects" },
+      // { name: "All Orders", path: "/projects", key: "projects" },
       { name: "Add New Orders", path: "/projects/new", key: "projects-new" },
       { name: "Ongoing Oredes", path: "/projects/ongoing", key: "projects-ongoing" },
       { name: "History & Details", path: "/projects/history", key: "projects-history" },
@@ -61,9 +61,9 @@ const sidebarItems = [
     ),
     hasSubmenu: true,
     submenu: [
-      { name: "Add New Client", path: "/clients/new", key: "clients-new" },
+      // { name: "Add New Client", path: "/clients/new", key: "clients-new" },
       { name: "All Clients List", path: "/clients/list", key: "clients-list" },
-      { name: "GST Plans & Billing", path: "/clients/gst-billing", key: "clients-gst-billing" },
+      { name: "GST Plans & Billing", path: "clients/billing", key: "clients-gst-billing" },
     ],
   },
   {

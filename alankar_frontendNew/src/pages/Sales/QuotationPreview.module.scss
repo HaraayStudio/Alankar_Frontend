@@ -90,7 +90,7 @@
   left: 0;
   top: 0;
   width: 100vw;
-  height: 100vh;
+  height: 80vh;
   background: rgba(36, 36, 36, 0.45);
   z-index: 9999;
   display: flex;
@@ -103,6 +103,7 @@
   padding: 32px 36px 18px 36px;
   max-width: 530px;
   min-width: 390px;
+// height: 100vh;
   box-shadow: 0 6px 38px 0 rgba(34, 34, 34, 0.15);
   position: relative;
   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;

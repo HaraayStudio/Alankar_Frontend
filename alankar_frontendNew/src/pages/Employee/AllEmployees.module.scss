@@ -1,12 +1,76 @@
-.container {
-  padding: 2rem;
-  background: #f7f7f7;
+.allEmployeesMainDiv {
+  width: 100%;
+  min-height: 100vh;
+  background-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-h2 {
-  margin-bottom: 1.5rem;
-  color: #222;
+.headerBox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+  background: linear-gradient(89deg, #D7B3FF -39.46%, #C5DCFF 103.31%);
+  .buttonDiv {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    gap: 20px;
+    border-radius: 30px;
+    background: rgba(4, 4, 4, 0.06);
+    backdrop-filter: blur(5.5px);
+    .backButton {
+      display: flex;
+      padding: 10px 20px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: 30px;
+      background: var(--Colour-White-01, #FFF);
+      color: var(--Colour-Heading, #030304);
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%;
+      transition: background 0.2s, color 0.2s;
+      &:hover {
+        background: #c7dcfa;
+        color: #022b6c;
+      }
+    }
+    .activeButton {
+      background: var(--Colour-1st-Colour, #0584FE);
+      color: #fff;
+      pointer-events: none;
+      font-weight: 500;
+    }
+  }
+}
+.listDiv {
+  width: 98% ; margin:0 auto;
+  margin-top: 30px;
+  // max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 26px;
+  background: var(--Colour-White-01, #FFF);
+  box-shadow: 0px 2px 20px 0px rgba(4, 4, 4, 0.06);
+  padding: 34px;
+  h2 {
+    margin-bottom: 1.5rem;
+    color: #222;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+  }
 }
 .tableWrapper {
+  width: 100%;
   overflow-x: auto;
 }
 .table {
@@ -19,7 +83,9 @@ h2 {
   th, td {
     padding: 14px 18px;
     border-bottom: 1px solid #eee;
-    text-align: left;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 17px;
   }
   th {
     background-color: #f0f4ff;
@@ -28,5 +94,298 @@ h2 {
   }
   tbody tr:hover {
     background-color: #f9fbff;
+    transition: background 0.12s;
+  }
+  td button {
+    margin-right: 8px;
+    padding: 6px 18px;
+    border-radius: 30px;
+    border: none;
+    background: #eef5ff;
+    color: #0584FE;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    &:hover {
+      background: #cfe1ff;
+      color: #174291;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+  td:last-child {
+    min-width: 155px;
+  }
+}
+/* ===================
+   Edit Popup Styling
+   =================== */
+.editPopup {
+  position: fixed;
+  z-index: 1002;
+  inset: 0;
+  background: rgba(30, 36, 50, 0.23);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .popupContent {
+    background: rgba(255, 255, 255, 0.90);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px 0 rgba(34, 46, 103, 0.19);
+    padding: 32px 34px;
+    min-width: 350px;
+    max-width: 95vw;
+    width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    animation: popupIn 0.18s cubic-bezier(.35,1.35,.52,1.03);
+    h3 {
+      font-size: 22px;
+      font-family: Arial, sans-serif;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #504f4f;
+    }
+    .formGrid {
+      display: flex;
+      flex-direction: column;
+      gap: 13px;
+      input {
+        width: 100%;
+        padding: 13px 18px;
+        border-radius: 30px;
+        border: 1px solid #B0B0B0;
+        background: #f5f9ff;
+        font-size: 16px;
+        font-family: Arial, sans-serif;
+        &:focus {
+          border-color: #0584FE;
+          background: #fff;
+        }
+      }
+    }
+    .popupActions {
+      margin-top: 15px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 14px;
+      button {
+        padding: 9px 22px;
+        border-radius: 30px;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        background: #0584FE;
+        color: #fff;
+        transition: background 0.15s;
+        &:hover {
+          background: #174291;
+        }
+        &:last-child {
+          background: #f2f2f2;
+          color: #222;
+          &:hover {
+            background: #d0d7ee;
+            color: #174291;
+          }
+        }
+      }
+    }
+  }
+}
+@keyframes popupIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+/* ===================
+   Delete Alert Modal
+   =================== */
+.deleteAlert {
+  position: fixed;
+  z-index: 1010;
+  inset: 0;
+  background: rgba(30, 36, 50, 0.27);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .alertBox {
+    background: #fff;
+    border-radius: 22px;
+    box-shadow: 0 8px 32px 0 rgba(34, 46, 103, 0.17);
+    padding: 30px 40px 24px 40px;
+    min-width: 320px;
+    max-width: 92vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 17px;
+    animation: popupIn 0.15s cubic-bezier(.35,1.35,.52,1.03);
+    .alertTitle {
+      font-size: 21px;
+      font-family: Arial, sans-serif;
+      font-weight: 600;
+      color: #d42020;
+      margin-bottom: 7px;
+    }
+    .alertText {
+      color: #222;
+      font-size: 17px;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .alertActions {
+      display: flex;
+      gap: 14px;
+      margin-top: 8px;
+      button {
+        padding: 8px 22px;
+        border-radius: 30px;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        background: #d42020;
+        color: #fff;
+        transition: background 0.15s;
+        &:hover {
+          background: #921616;
+        }
+        &:last-child {
+          background: #f2f2f2;
+          color: #222;
+          &:hover {
+            background: #d0d7ee;
+            color: #d42020;
+          }
+        }
+      }
+    }
+  }
+}
+/* Responsive tweaks */
+@media (max-width: 700px) {
+  .listDiv {
+    padding: 18px;
+  }
+  .headerBox .buttonDiv {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px;
+  }
+  .editPopup .popupContent {
+    padding: 17px 7vw;
+    width: 95vw;
+    min-width: unset;
+  }
+  .deleteAlert .alertBox {
+    padding: 18px 5vw 14px 5vw;
+    min-width: unset;
+  }
+}
+.viewPopup {
+  position: fixed;
+  z-index: 1003;
+  inset: 0;
+  background: rgba(30, 36, 50, 0.19);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .popupContent {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 24px;
+    box-shadow: 0 8px 32px 0 rgba(34, 46, 103, 0.19);
+    padding: 38px 40px;
+    min-width: 360px;
+    max-width: 96vw;
+    width: 440px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: popupIn 0.19s cubic-bezier(.35,1.35,.52,1.03);
+    h3 {
+      font-size: 22px;
+      font-family: Arial, sans-serif;
+      font-weight: 600;
+      margin-bottom: 18px;
+      color: #0584FE;
+    }
+    .detailsGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px 24px;
+      margin-bottom: 10px;
+      font-family: Arial, sans-serif;
+      font-size: 17px;
+      color: #222;
+      div {
+        display: flex;
+        flex-direction: column;
+      }
+      .label {
+        color: #255ec6;
+        font-size: 15px;
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+    }
+    .popupActions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 14px;
+      button {
+        padding: 10px 26px;
+        border-radius: 30px;
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        background: #0584FE;
+        color: #fff;
+        transition: background 0.14s;
+        &:hover {
+          background: #174291;
+        }
+        &:last-child {
+          background: #f2f2f2;
+          color: #d42020;
+          &:hover {
+            background: #fbe2e2;
+            color: #d42020;
+          }
+        }
+        &:disabled {
+          background: #dadada;
+          color: #888;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}
+/* Responsive for popup grid */
+@media (max-width: 650px) {
+  .viewPopup .popupContent {
+    padding: 15px 4vw;
+    width: 98vw;
+    min-width: unset;
+  }
+  .viewPopup .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 10px 0;
   }
 }

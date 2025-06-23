@@ -1,0 +1,161 @@
+.mainBillingDiv {
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(120deg, #eef2ff 0%, #e0e6fa 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.headerBox {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 0;
+  background: linear-gradient(89deg, #D7B3FF -39.46%, #C5DCFF 103.31%);
+  .buttonDiv {
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    gap: 20px;
+    border-radius: 30px;
+    background: rgba(4, 4, 4, 0.06);
+    backdrop-filter: blur(5.5px);
+    .backButton {
+      display: flex;
+      padding: 10px 20px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border-radius: 30px;
+      background: var(--Colour-White-01, #FFF);
+      color: var(--Colour-Heading, #030304);
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 150%;
+      transition: background 0.2s, color 0.2s;
+      &:hover {
+        background: #c7dcfa;
+        color: #022b6c;
+      }
+    }
+    .activeButton {
+      background: var(--Colour-1st-Colour, #0584FE);
+      color: #fff;
+      pointer-events: none;
+      font-weight: 500;
+    }
+  }
+}
+.billingListDiv {
+  margin: 32px auto 0 auto;
+  width: 98%;
+  max-width: 1160px;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0px 2px 20px 0px rgba(4, 4, 4, 0.06);
+  padding: 32px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  h2 {
+    font-size: 23px;
+    color: #24324c;
+    font-family: Arial, sans-serif;
+    font-weight: 600;
+    margin-bottom: 18px;
+  }
+}
+.tableWrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #fff;
+  th,
+  td {
+    padding: 13px 18px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #222;
+    border-bottom: 1px solid #eff2f8;
+  }
+  th {
+    background: #e9f0ff;
+    color: #42559c;
+    font-weight: 600;
+    font-size: 15px;
+    text-align: left;
+    border-bottom: 2px solid #ddeaff;
+  }
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+  tbody tr:hover {
+    background: #f8faff;
+  }
+}
+.statusCompleted {
+  padding: 6px 18px;
+  border-radius: 13px;
+  background: #e9faea;
+  color: #1caa57;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid #c8f4d1;
+  display: inline-block;
+}
+.statusPending {
+  padding: 6px 18px;
+  border-radius: 13px;
+  background: #fff9ed;
+  color: #f7a21a;
+  font-size: 15px;
+  font-weight: 600;
+  border: 1px solid #f5e1be;
+  display: inline-block;
+}
+.actionBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 8px;
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 50%;
+  margin-right: 4px;
+  transition: background 0.13s;
+  &:hover {
+    background: #edf3fd;
+  }
+  svg {
+    color: #7a8db8;
+    transition: color 0.14s;
+  }
+  &:hover svg {
+    color: #1976d2;
+  }
+}
+.actionBtn:last-child {
+  margin-right: 0;
+}
+@media (max-width: 850px) {
+  .billingListDiv {
+    padding: 16px 4px;
+    h2 {
+      font-size: 19px;
+    }
+  }
+  .table th,
+  .table td {
+    padding: 9px 7px;
+    font-size: 15px;
+  }
+}

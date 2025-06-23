@@ -264,8 +264,10 @@
 .action {
   width: 120px;
 }
-.viewTemplateBtn {
-  background: linear-gradient(135deg, #f59e0b, #d97706);
+.statusBtn{
+  margin: 10px 0;
+  background: linear-gradient(135deg, #0e77dad3);
+  background-color: gre;
   color: white;
   border: none;
   border-radius: 8px;
@@ -277,7 +279,27 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   &:hover {
-    background: linear-gradient(135deg, #d97706, #b45309);
+    background: linear-gradient(135deg, #06a8d9, #0779ad);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+  }
+}
+.viewTemplateBtn {
+  margin: 10px 0;
+  background: linear-gradient(135deg, #aeafae, #cecece);
+  background-color: gre;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  &:hover {
+    background: linear-gradient(135deg, #06a8d9, #0779ad);
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
   }
