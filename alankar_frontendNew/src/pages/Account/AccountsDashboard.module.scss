@@ -1,0 +1,401 @@
+.gridWrap {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto auto;
+  gap: 28px 24px;
+  padding: 24px;
+  background: #f3f6fa;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 8px;
+  }
+}
+
+.paymentSummaryCard {
+  grid-column: 1/3;
+  grid-row: 1;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px 0 rgba(59,85,191,0.08);
+  padding: 30px 36px 26px 32px;
+  display: flex;
+  flex-direction: column;
+  min-width: 320px;
+  min-height: 270px;
+  position: relative;
+
+  .sectionTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+
+  .sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #202b5c;
+  }
+  .dropdownBtn {
+    background: #f4f7fd;
+    color: #1a3552;
+    font-size: 0.93rem;
+    border: none;
+    padding: 7px 18px;
+    border-radius: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+    transition: background 0.2s;
+    &:hover { background: #eaf1ff; }
+  }
+  .paymentTotal {
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #23293e;
+  }
+  .paymentSubTxt {
+    font-size: 1.1rem;
+    color: #697086;
+    margin-bottom: 2px;
+  }
+  .growthPositive {
+    color: #36b37e;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 10px;
+    .labelGreen {
+      margin-left: 14px;
+      background: #e6fbe8;
+      color: #26b17a;
+      font-weight: 600;
+      padding: 2px 13px;
+      border-radius: 12px;
+      font-size: 0.93rem;
+    }
+  }
+
+  .barChartWrap {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+  .barChartGraph {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    height: 110px;
+    gap: 16px;
+  }
+  .barCol {
+    flex: 1 1 0%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .bar {
+      background: linear-gradient(180deg, #2674e0 0%, #e9f2ff 100%);
+      border-radius: 20px 20px 6px 6px;
+      width: 18px;
+      min-height: 16px;
+      transition: height 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      position: relative;
+      box-shadow: 0 4px 12px 0 rgba(38, 116, 224, 0.09);
+    }
+    .barValuePop {
+      position: absolute;
+      top: -38px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      color: #fff;
+      font-size: 1rem;
+      padding: 6px 18px;
+      border-radius: 16px;
+      font-weight: 600;
+      z-index: 10;
+      box-shadow: 0 6px 18px 0 rgba(40,60,80,0.11);
+      white-space: nowrap;
+      letter-spacing: 0.01em;
+    }
+    .barLabel {
+      margin-top: 11px;
+      font-size: 1.09rem;
+      color: #96a1bb;
+      font-weight: 600;
+      &.activeDay {
+        color: #2674e0;
+        font-weight: 700;
+        font-size: 1.13rem;
+      }
+    }
+    &.activeBar .bar {
+      background: linear-gradient(180deg, #2674e0 0%, #aed5ff 100%);
+      box-shadow: 0 8px 24px 0 rgba(38,116,224,0.16);
+    }
+  }
+}
+
+.reportsCard {
+  grid-column: 3/5;
+  grid-row: 1;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px 0 rgba(59,85,191,0.08);
+  min-width: 220px;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 27px 8px 18px 8px;
+  .sectionTitle {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #202b5c;
+    margin-bottom: 8px;
+  }
+  .legendList {
+    margin-top: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    justify-content: center;
+  }
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 1rem;
+    color: #3e4d6a;
+    font-weight: 600;
+    .legendDot {
+      width: 13px;
+      height: 13px;
+      border-radius: 100%;
+      display: inline-block;
+      margin-right: 3px;
+      border: 2.2px solid #f2f3fc;
+      box-shadow: 0 2px 5px rgba(50,60,160,0.06);
+    }
+  }
+}
+
+.incomeCard, .expenseCard {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px 0 rgba(59,85,191,0.07);
+  min-width: 260px;
+  min-height: 270px;
+  padding: 28px 26px 18px 30px;
+  display: flex;
+  flex-direction: column;
+
+  .sectionTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+  }
+  .sectionTitle {
+    font-size: 1.16rem;
+    font-weight: 700;
+    color: #202b5c;
+  }
+  .dropdownBtn {
+    background: #f4f7fd;
+    color: #1a3552;
+    font-size: 0.93rem;
+    border: none;
+    padding: 7px 16px;
+    border-radius: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+    &:hover { background: #eaf1ff; }
+  }
+  .paymentTotal {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2674e0;
+    margin-bottom: 3px;
+  }
+  .incomeSubTxt, .expenseSubTxt {
+    color: #3a3a3a;
+    font-size: 1.05rem;
+    margin-bottom: 9px;
+    .labelGreen {
+      color: #32ad5a;
+      font-weight: 600;
+      background: #eaf9f1;
+      border-radius: 11px;
+      padding: 2px 10px;
+    }
+    .labelRed {
+      color: #ea4343;
+      font-weight: 600;
+      background: #ffeaea;
+      border-radius: 11px;
+      padding: 2px 10px;
+    }
+  }
+  .paymentHistoryHead {
+    margin: 2px 0 5px 0;
+    font-size: 1.08rem;
+    font-weight: 700;
+    color: #2c375b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .seeAll {
+      color: #2674e0;
+      font-size: 0.98rem;
+      font-weight: 500;
+      margin-left: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 1.5px;
+      &:hover { text-decoration: underline; }
+    }
+  }
+  .paymentHistoryList {
+    margin-top: 5px;
+    .paymentHistoryRow {
+      background: #f6fafd;
+      border-radius: 13px;
+      padding: 11px 12px 11px 17px;
+      margin-bottom: 7px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: #404c68;
+      .historyUser {
+        width: 110px;
+        font-weight: 600;
+      }
+      .historyDate {
+        width: 104px;
+        color: #8697ad;
+      }
+      .historyAmt {
+        width: 75px;
+        color: #222c52;
+        font-weight: 700;
+        font-size: 1.08rem;
+      }
+      .historyStatus {
+        margin-left: auto;
+        padding: 2px 16px;
+        border-radius: 17px;
+        font-size: 0.98rem;
+        font-weight: 600;
+        &.completed {
+          background: #e3fbe5;
+          color: #32ad5a;
+        }
+        &.pending {
+          background: #fff6e3;
+          color: #e4ad33;
+        }
+      }
+    }
+  }
+}
+
+.bottomCard {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px 0 rgba(59,85,191,0.09);
+  padding: 24px 24px 20px 23px;
+  min-width: 220px;
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  .bottomTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    .bottomTitle {
+      font-size: 1.11rem;
+      font-weight: 700;
+      color: #25335d;
+      margin-bottom: 1px;
+    }
+    .bottomDropdown {
+      background: #f4f7fd;
+      color: #1a3552;
+      font-size: 0.91rem;
+      border-radius: 12px;
+      padding: 2px 12px;
+      display: flex;
+      align-items: center;
+      gap: 2.5px;
+      font-weight: 500;
+      margin-left: 12px;
+      margin-bottom: 2px;
+      cursor: pointer;
+      transition: background 0.2s;
+      &:hover { background: #eaf1ff; }
+    }
+  }
+  .bottomStatsRow {
+    display: flex;
+    align-items: flex-end;
+    gap: 19px;
+    margin-bottom: 8px;
+    .bottomStats {
+      font-size: 2rem;
+      color: #2674e0;
+      font-weight: 800;
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+    .bottomGrowth {
+      color: #36b37e;
+      background: #e6fbe8;
+      border-radius: 10px;
+      padding: 1.5px 12px;
+      font-weight: 600;
+      font-size: 0.97rem;
+      margin-bottom: 6px;
+      margin-left: 4px;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .gridWrap {
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .paymentSummaryCard, .reportsCard, .incomeCard, .expenseCard, .bottomCard {
+    min-width: 0 !important;
+    padding: 14px 10px !important;
+  }
+}
+
+@media (max-width: 700px) {
+  .gridWrap {
+    grid-template-columns: 1fr;
+    gap: 13px;
+    padding: 4px;
+  }
+  .paymentSummaryCard, .reportsCard, .incomeCard, .expenseCard, .bottomCard {
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 11px 7px !important;
+  }
+}

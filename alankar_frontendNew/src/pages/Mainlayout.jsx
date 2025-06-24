@@ -8,7 +8,7 @@ import { icons } from "lucide-react";
 const sidebarItems = [
   {
     name: "Dashboard",
-    path: "/dashboard",
+    path: "/",
     key: "dashboard",
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" width="30" height="31" viewBox="0 0 30 31" fill="none">
@@ -148,35 +148,60 @@ const handleNavigation = (item) => {
   </span>
   <span className={styles.sidebarText}>{item.name}</span>
   {item.hasSubmenu && (
-    <span
-      className={`${styles.submenuArrow} ${
-        expandedMenus[item.key] ? styles.expanded : ""
-      }`}
-    >&#8250;</span>
+<span
+  className={[
+    styles.submenuArrow,
+    expandedMenus[item.key] ? styles.expanded : "",
+    (isParentActive(item) || isActive(item.path)) ? styles.active : ""
+  ].join(" ")}
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="31" viewBox="0 0 30 31" fill="none">
+    <path d="M11.5 22.7031L18.5 15.7031L11.5 8.70312"
+      stroke="currentColor"
+      strokeWidth="1.4"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
+  </svg>
+</span>
+
+
+
   )}
 </div>
               {/* Submenu Animation */}
               <AnimatePresence initial={false}>
                 {item.hasSubmenu && expandedMenus[item.key] && (
                   <motion.div
-                    className={styles.sidebarSubmenu}
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    variants={submenuVariants}
-                  >
-                    {item.submenu.map((subItem) => (
-                      <div
-                        key={subItem.key}
-                        className={`${styles.sidebarItem} ${styles.submenuItem} ${
-                          isActive(subItem.path) ? styles.active : ""
-                        }`}
-                        onClick={() => handleSubmenuNavigation(subItem.path)}
-                      >
-                        <span className={styles.sidebarText}>{subItem.name}</span>
-                      </div>
-                    ))}
-                  </motion.div>
+  className={styles.sidebarSubmenu}
+  initial="hidden"
+  animate="visible"
+  exit="hidden"
+  variants={submenuVariants}
+>
+  {item.submenu.map((subItem, idx) => (
+    <div
+      key={subItem.key}
+      className={`${styles.sidebarItem} ${styles.submenuItem} ${
+        isActive(subItem.path) ? styles.active : ""
+      }`}
+      onClick={() => handleSubmenuNavigation(subItem.path)}
+    >
+      {/* Left vertical line and dot */}
+      <span className={styles.submenuLineWrap}>
+        {/* Line: full except for first/last, for 2 items always full */}
+        <span className={styles.submenuLine} />
+        <span
+          className={`${styles.submenuDot} ${
+            isActive(subItem.path) ? styles.active : ""
+          }`}
+        />
+      </span>
+      <span className={styles.sidebarText}>{subItem.name}</span>
+    </div>
+  ))}
+</motion.div>
+
                 )}
               </AnimatePresence>
             </div>

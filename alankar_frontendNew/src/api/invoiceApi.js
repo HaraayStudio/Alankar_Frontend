@@ -14,3 +14,17 @@ export const createInvoice = (invoiceData ,token) =>
       headers: { Authorization: `Bearer ${token}` }
     }
   );
+export const sendInvoiceMail = (invoiceNumber, token) =>
+  axios.post(
+    `${BASE_URL}/invoice/sendinvoice`,
+    null,
+    {
+      params: { invoiceNumber },
+      headers: { Authorization: `Bearer ${token}` }
+    }
+  );
+
+export const getAllInvoices = (token) =>
+  api.get('/invoice/getallinvoices', {
+    headers: { Authorization: `Bearer ${token}` }
+  });

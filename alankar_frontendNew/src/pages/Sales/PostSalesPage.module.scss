@@ -266,7 +266,7 @@ background: var(--Colour-1st-Colour, #ffffff);
   margin: 36px 0 18px 0;
   .pageTitle {color: var(--Colour-Heading, #030304);
 font-family: Arial;
-font-size: 18px;
+font-size: 24px;
 font-style: normal;
 font-weight: 500;
 line-height: 150%; /* 36px */
@@ -457,3 +457,96 @@ line-height: 150%; /* 36px */
     padding-bottom: 18px;
     margin-bottom: 16px;
   }}
+  .table {
+  width: 100%;
+  min-width: 1200px;
+  border-collapse: separate;
+  border-spacing: 0;
+  th, td {
+    padding: 13px 15px;
+    font-size: 15.2px;
+    text-align: left;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  thead tr {
+    background: #e3e8ff;
+    border-bottom: 2px solid var(--border);
+    th {
+      font-weight: 700;
+      color: #21336d;
+      font-size: 15.5px;
+      text-align: left;
+      letter-spacing: 0.01em;
+      border-bottom: 2px solid var(--border);
+    }
+  }
+  tbody tr {
+    border-bottom: 1.5px solid #e0e6f1;
+    background: #fff;
+    transition: background 0.16s;
+    &:hover {
+      background: #f6faff;
+    }
+    td {
+      font-size: 15px;
+      color: var(--text);
+      vertical-align: middle;
+      .addButtonSmall {
+        background: var(--chip-bg);
+        color: var(--primary);
+        border: none;
+        border-radius: 16px;
+        padding: 6px 16px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.14s;
+        &:hover {
+          background: var(--primary-light);
+        }
+      }
+    }
+  }
+  .actionsCol {
+    display: flex;
+    gap: 8px;
+    .iconButton {
+      background: #f4f7fd;
+      border: none;
+      border-radius: 9px;
+      padding: 5px 8px;
+      color: var(--primary);
+      cursor: pointer;
+      transition: background 0.15s;
+      &:hover {
+        background: var(--primary-light);
+        color: #1851a3;
+      }
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.32;
+      }
+      svg { vertical-align: middle; }
+    }
+  }
+}
+ .addButton {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--primary);
+    color: #fff;
+    padding: 10px 22px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 12px rgba(41, 121, 255, 0.10);
+    transition: background 0.14s;
+    svg { margin-right: 2px; }
+    &:hover {
+      background: #2559c5;
+    }
+  }

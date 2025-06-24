@@ -1930,7 +1930,7 @@ const tableHeaders = [
   "clientType",
   "Estimated Budget",
   "Quotation",
-  "Check Status",
+  "Quotation Status",
   "Status",
   "Conclusion",
   "Action",

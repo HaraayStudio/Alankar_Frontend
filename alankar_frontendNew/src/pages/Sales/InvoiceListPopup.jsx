@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./PostSalesPage.module.scss";
+import styles from "./InvoiceList.module.scss";
 import InvoicePreview from "./InvoicePreview.jsx";
 import { X, Eye } from "lucide-react";
 import { useData } from "../../context/DataContext";
@@ -29,7 +29,7 @@ const InvoiceListPopup = ({ open, postsale, onClose, onInvoiceAdded }) => {
           postsale.client?.address ||
           `${postsale.client?.email ?? ""} ${postsale.client?.phone ?? ""}`,
         details: postsale.order?.description ?? "",
-        qty: postsale.qty ?? 0,
+        qty: postsale?.qty ,
         unitPrice: postsale.unitPrice ?? 0,
         totalAmount: postsale.finalAmtWithOutGST ?? 0,
         totalAmountWithGST: postsale.totalAmtWithGST ?? 0,
@@ -39,6 +39,7 @@ const InvoiceListPopup = ({ open, postsale, onClose, onInvoiceAdded }) => {
           .toISOString()
           .slice(0, 10),
       };
+      console.log("Creating invoice with payload:", payload);
       const result = await handleAddInvoice(payload);
       if (result.success) {
         alert("Invoice created successfully!");

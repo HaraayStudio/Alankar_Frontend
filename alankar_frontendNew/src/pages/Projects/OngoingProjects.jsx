@@ -214,9 +214,15 @@ const Orders = () => {
                       <div className={styles.stepHeader}>
                         <span className={styles.stepNumber}>{index + 1}</span>
                         <span className={styles.stepName}>{step.orderStepName}</span>
-                        <span className={`${styles.stepStatus} ${getStatusClass(step.status)}`}>
-                          {step.status}
-                        </span>
+                       <select
+  className={styles.stepStatusSelect}
+  value={step.status}
+  onChange={e => handleStepStatusChange(step, e.target.value)}
+>
+  <option value="CREATED">Created</option>
+  <option value="ONGOING">Ongoing</option>
+  <option value="COMPLETED">Completed</option>
+</select>
                       </div>
                       <div className={styles.stepMeasurement}>
                         <span className={styles.measurementLabel}>Measurement:</span>

@@ -1,519 +1,217 @@
-import React, { useState, createContext, useContext } from 'react';
-import { MoreHorizontal, Calendar, DollarSign, Clock, Users, TrendingUp, CheckCircle, AlertCircle, Pause, Play } from 'lucide-react';
-// Mock DataContext for demonstration - replace with your actual context
-import { DataContext } from '../../context/DataContext';
-import styles from './Projects.module.scss'; // Assuming you have a CSS module for styles
-// Dashboard Componen
- const Dashboard = () => {
-  const { setAuthToken, authToken, orders } = useContext(DataContext);
-  // Fix: orders is already an array, don't wrap it in useState
-  console.log("Orders in Dashboard:", orders);
-  const projects = orders ;
-  // Calculate stats with null checks
-  const totalProjects = projects.length;
-  const activeProjects = projects.filter(p => p.status === 'IN_PROGRESS').length;
-  const completedProjects = projects.filter(p => p.status === 'COMPLETED').length;
-  const totalBudget = projects.reduce((sum, p) => sum + (p.budget || 0), 0);
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'COMPLETED': return '#10B981';
-      case 'IN_PROGRESS': return '#3B82F6';
-      case 'ON_HOLD': return '#F59E0B';
-      case 'CREATED': return '#6B7280';
-      default: return '#6B7280';
-    }
-  };
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'COMPLETED': return <CheckCircle size={16} />;
-      case 'IN_PROGRESS': return <Play size={16} />;
-      case 'ON_HOLD': return <Pause size={16} />;
-      case 'CREATED': return <AlertCircle size={16} />;
-      default: return <AlertCircle size={16} />;
-    }
-  };
-  const getPriorityColor = (priority) => {
-    switch (priority) {
-      case 'HIGH': return '#EF4444';
-      case 'MEDIUM': return '#F59E0B';
-      case 'LOW': return '#10B981';
-      default: return '#6B7280';
-    }
-  };
-  const getProgressPercentage = (steps) => {
-    if (!steps || steps.length === 0) return 0;
-    const completedSteps = steps.filter(step => step.status === 'COMPLETED').length;
-    return Math.round((completedSteps / steps.length) * 100);
-  };
-  // Monthly data for chart
-  const monthlyData = [
-    { month: 'Jan', completed: 8, active: 12 },
-    { month: 'Feb', completed: 12, active: 15 },
-    { month: 'Mar', completed: 15, active: 18 },
-    { month: 'Apr', completed: 10, active: 14 },
-    { month: 'May', completed: 18, active: 20 },
-    { month: 'Jun', completed: 14, active: 16 }
+// src/pages/OrderDashboard.jsx
+import React, { useContext, useMemo } from "react";
+import { DataContext } from "../../context/DataContext";
+import styles from "./OrderDashboard.module.scss";
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend
+} from "recharts";
+import { motion } from "framer-motion";
+import { ChevronRight, CheckCircle, Clock, User, TrendingUp } from "lucide-react";
+
+// --- Helpers ---
+const formatDate = (date) =>
+  date ? new Date(date).toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }) : "-";
+const formatStat = (num) => (num || 0).toLocaleString();
+
+const COLORS = ["#27cb7a", "#23b8ff", "#ffe371"];
+const STATUS_COLORS = { Ongoing: "#27cb7a", Completed: "#23b8ff", Assigned: "#ffe371" };
+
+// Example demo data for chart, can connect to your real data as required:
+const ordersByDay = [
+  { day: "Monday", orders: 340 },
+  { day: "Tuesday", orders: 270 },
+  { day: "Wednesday", orders: 220 },
+  { day: "Thursday", orders: 400 },
+  { day: "Friday", orders: 290 },
+  { day: "Saturday", orders: 240 },
+  { day: "Sunday", orders: 260 }
+];
+
+const goalStats = [
+  { name: "Active", value: 18 },
+  { name: "Completed", value: 54 },
+  { name: "Assigned", value: 18 }
+];
+
+const getStatusDot = (status) => (
+  <span
+    className={styles.statusDot}
+    style={{ background: STATUS_COLORS[status] || "#bbb" }}
+  />
+);
+
+export default function OrderDashboard() {
+  const { orders, clients } = useContext(DataContext);
+
+  // --- Calculate stats from real data ---
+  const now = new Date();
+  const totalOrders = orders.length;
+  const completedOrders = orders.filter(o => o.status === "COMPLETED").length;
+  const ongoingOrders = orders.filter(o => o.status === "IN_PROGRESS" || o.status === "ONGOING").length;
+  const pendingOrders = orders.filter(o => o.status === "PENDING").length;
+
+  // --- Weekly change percentage (demo, make dynamic) ---
+  const weekChange = "+10%";
+
+  // --- Demo history (replace with real) ---
+  const historyList = Array(3).fill().map((_, i) => ({
+    name: "Wall poster designing",
+    status: "Ongoing",
+    date: "20 June, 2025"
+  }));
+
+  // --- Calculate pie stats ---
+  const pieStats = [
+    { name: "Active", value: ongoingOrders },
+    { name: "Completed", value: completedOrders },
+    { name: "Assigned", value: Math.max(0, totalOrders - ongoingOrders - completedOrders) }
   ];
+
+  // --- Animations ---
+  const spring = { type: "spring", stiffness: 120, damping: 16 };
+
   return (
-    // <div style={{ 
-    //   minHeight: '100vh',  background: 'linear-gradient(89deg, #D7B3FF -39.46%, #C5DCFF 103.31%)',
-    //   // background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    //   padding: '20px',
-    //   fontFamily: '"Inter", -apple-system, BlinkMacSystemFont, sans-serif'
-    // }}>
-    //   {/* Header */}
-    //   <div style={{
-    //     display: 'flex',
-    //     justifyContent: 'space-between',
-    //     alignItems: 'center',
-    //     marginBottom: '30px'
-    //   }}>
-    //     <div style={{
-    //       display: 'flex',
-    //       gap: '15px'
-    //     }}>
-    //       <button style={{
-    //         background: 'rgba(255, 255, 255, 0.2)',
-    //         border: 'none',
-    //         padding: '12px 24px',
-    //         borderRadius: '12px',
-    //         color: 'white',
-    //         fontWeight: '500',
-    //         cursor: 'pointer',
-    //         backdropFilter: 'blur(10px)'
-    //       }}>
-    //         Add New Project
-    //       </button>
-    //       <button style={{
-    //         background: 'rgba(255, 255, 255, 0.1)',
-    //         border: 'none',
-    //         padding: '12px 24px',
-    //         borderRadius: '12px',
-    //         color: 'white',
-    //         fontWeight: '500',
-    //         cursor: 'pointer',
-    //         backdropFilter: 'blur(10px)'
-    //       }}>
-    //         Ongoing Projects
-    //       </button>
-    //       <button style={{
-    //         background: 'rgba(255, 255, 255, 0.1)',
-    //         border: 'none',
-    //         padding: '12px 24px',
-    //         borderRadius: '12px',
-    //         color: 'white',
-    //         fontWeight: '500',
-    //         cursor: 'pointer',
-    //         backdropFilter: 'blur(10px)'
-    //       }}>
-    //         History & Details
-    //       </button>
-    //     </div>
-    //   </div>
-    //   {/* Main Content */}
-    //   <div style={{
-    //     background: 'rgba(255, 255, 255, 0.95)',
-    //     borderRadius: '20px',
-    //     padding: '30px',
-    //     backdropFilter: 'blur(20px)',
-    //     boxShadow: '0 20px 40px rgba(0, 0, 0, 0.1)'
-    //   }}>
-    //     {/* Stats Cards */}
-    //     <div style={{
-    //       display: 'grid',
-    //       gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-    //       gap: '20px',
-    //       marginBottom: '40px'
-    //     }}>
-    //       <div style={{
-    //         background: 'white',
-    //         padding: '25px',
-    //         borderRadius: '16px',
-    //         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-    //         border: '1px solid rgba(0, 0, 0, 0.05)'
-    //       }}>
-    //         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-    //           <div style={{
-    //             background: '#3B82F6',
-    //             padding: '8px',
-    //             borderRadius: '8px',
-    //             color: 'white',
-    //             display: 'flex'
-    //           }}>
-    //             <Users size={20} />
-    //           </div>
-    //           <span style={{ color: '#6B7280', fontSize: '14px' }}>Active Projects</span>
-    //         </div>
-    //         <div style={{ fontSize: '32px', fontWeight: '700', color: '#1F2937' }}>{activeProjects}</div>
-    //       </div>
-    //       <div style={{
-    //         background: 'white',
-    //         padding: '25px',
-    //         borderRadius: '16px',
-    //         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-    //         border: '1px solid rgba(0, 0, 0, 0.05)'
-    //       }}>
-    //         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-    //           <div style={{
-    //             background: '#10B981',
-    //             padding: '8px',
-    //             borderRadius: '8px',
-    //             color: 'white',
-    //             display: 'flex'
-    //           }}>
-    //             <CheckCircle size={20} />
-    //           </div>
-    //           <span style={{ color: '#6B7280', fontSize: '14px' }}>Total Revenue</span>
-    //         </div>
-    //         <div style={{ fontSize: '32px', fontWeight: '700', color: '#1F2937' }}>
-    //           ₹{totalBudget > 0 ? (totalBudget / 1000).toFixed(0) : '0'}k
-    //         </div>
-    //       </div>
-    //       <div style={{
-    //         background: 'white',
-    //         padding: '25px',
-    //         borderRadius: '16px',
-    //         boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-    //         border: '1px solid rgba(0, 0, 0, 0.05)'
-    //       }}>
-    //         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-    //           <div style={{
-    //             background: '#F59E0B',
-    //             padding: '8px',
-    //             borderRadius: '8px',
-    //             color: 'white',
-    //             display: 'flex'
-    //           }}>
-    //             <Clock size={20} />
-    //           </div>
-    //           <span style={{ color: '#6B7280', fontSize: '14px' }}>Total Time</span>
-    //         </div>
-    //         <div style={{ fontSize: '32px', fontWeight: '700', color: '#1F2937' }}>180h 40m</div>
-    //       </div>
-    //     </div>
-    //     {/* Projects Overview & Chart */}
-    //     <div style={{
-    //       display: 'grid',
-    //       gridTemplateColumns: '1fr 2fr',
-    //       gap: '30px',
-    //       marginBottom: '40px'
-    //     }}>
-    //       {/* Projects Overview */}
-    //       <div>
-    //         <h3 style={{ 
-    //           fontSize: '18px', 
-    //           fontWeight: '600', 
-    //           color: '#1F2937', 
-    //           marginBottom: '20px' 
-    //         }}>
-    //           Projects Overview
-    //         </h3>
-    //         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-    //           <div style={{
-    //             display: 'flex',
-    //             justifyContent: 'space-between',
-    //             padding: '15px',
-    //             background: '#F8FAFC',
-    //             borderRadius: '12px'
-    //           }}>
-    //             <span style={{ color: '#64748B' }}>Active</span>
-    //             <span style={{ fontWeight: '600', color: '#1F2937' }}>{activeProjects}</span>
-    //           </div>
-    //           <div style={{
-    //             display: 'flex',
-    //             justifyContent: 'space-between',
-    //             padding: '15px',
-    //             background: '#F8FAFC',
-    //             borderRadius: '12px'
-    //           }}>
-    //             <span style={{ color: '#64748B' }}>Total</span>
-    //             <span style={{ fontWeight: '600', color: '#1F2937' }}>{totalProjects}</span>
-    //           </div>
-    //           <div style={{
-    //             display: 'flex',
-    //             justifyContent: 'space-between',
-    //             padding: '15px',
-    //             background: '#F8FAFC',
-    //             borderRadius: '12px'
-    //           }}>
-    //             <span style={{ color: '#64748B' }}>Budget</span>
-    //             <span style={{ fontWeight: '600', color: '#1F2937' }}>
-    //               ₹{totalBudget > 0 ? (totalBudget / 1000).toFixed(0) : '0'}k
-    //             </span>
-    //           </div>
-    //           <div style={{
-    //             display: 'flex',
-    //             justifyContent: 'space-between',
-    //             padding: '15px',
-    //             background: '#F8FAFC',
-    //             borderRadius: '12px'
-    //           }}>
-    //             <span style={{ color: '#64748B' }}>Completed</span>
-    //             <span style={{ fontWeight: '600', color: '#10B981' }}>{completedProjects}</span>
-    //           </div>
-    //         </div>
-    //       </div>
-    //       {/* Chart */}
-    //       <div>
-    //         <div style={{
-    //           background: 'white',
-    //           padding: '25px',
-    //           borderRadius: '16px',
-    //           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
-    //           height: '300px'
-    //         }}>
-    //           <div style={{
-    //             display: 'flex',
-    //             justifyContent: 'space-between',
-    //             alignItems: 'center',
-    //             marginBottom: '20px'
-    //           }}>
-    //             <span style={{ fontWeight: '600', color: '#1F2937' }}>Monthly Progress</span>
-    //             <div style={{ display: 'flex', gap: '20px', fontSize: '12px' }}>
-    //               <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-    //                 <div style={{ width: '12px', height: '12px', background: '#3B82F6', borderRadius: '2px' }}></div>
-    //                 <span>Completed</span>
-    //               </div>
-    //               <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-    //                 <div style={{ width: '12px', height: '12px', background: '#10B981', borderRadius: '2px' }}></div>
-    //                 <span>Active Projects</span>
-    //               </div>
-    //             </div>
-    //           </div>
-    //           <div style={{
-    //             display: 'flex',
-    //             alignItems: 'end',
-    //             justifyContent: 'space-between',
-    //             height: '200px',
-    //             padding: '0 10px'
-    //           }}>
-    //             {monthlyData.map((data, index) => (
-    //               <div key={index} style={{
-    //                 display: 'flex',
-    //                 flexDirection: 'column',
-    //                 alignItems: 'center',
-    //                 gap: '8px'
-    //               }}>
-    //                 <div style={{
-    //                   display: 'flex',
-    //                   flexDirection: 'column',
-    //                   alignItems: 'center',
-    //                   gap: '2px'
-    //                 }}>
-    //                   <div style={{
-    //                     width: '20px',
-    //                     height: `${data.completed * 8}px`,
-    //                     background: '#3B82F6',
-    //                     borderRadius: '3px 3px 0 0'
-    //                   }}></div>
-    //                   <div style={{
-    //                     width: '20px',
-    //                     height: `${data.active * 6}px`,
-    //                     background: '#10B981',
-    //                     borderRadius: '0 0 3px 3px'
-    //                   }}></div>
-    //                 </div>
-    //                 <span style={{ fontSize: '12px', color: '#6B7280' }}>{data.month}</span>
-    //               </div>
-    //             ))}
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //     {/* Active Projects and All Projects Table */}
-    //     <div style={{
-    //       display: 'grid',
-    //       gridTemplateColumns: '1fr 2fr',
-    //       gap: '30px'
-    //     }}>
-    //       {/* Active Projects */}
-    //       <div>
-    //         <h3 style={{ 
-    //           fontSize: '18px', 
-    //           fontWeight: '600', 
-    //           color: '#1F2937', 
-    //           marginBottom: '20px' 
-    //         }}>
-    //           Active Projects
-    //         </h3>
-    //         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-    //           {projects.filter(p => p.status === 'IN_PROGRESS' || p.status === 'CREATED').map((project) => (
-    //             <div key={project.id} style={{
-    //               background: 'white',
-    //               padding: '15px',
-    //               borderRadius: '12px',
-    //               boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
-    //               border: '1px solid rgba(0, 0, 0, 0.05)'
-    //             }}>
-    //               <div style={{
-    //                 display: 'flex',
-    //                 alignItems: 'center',
-    //                 gap: '10px',
-    //                 marginBottom: '8px'
-    //               }}>
-    //                 <div style={{
-    //                   width: '8px',
-    //                   height: '8px',
-    //                   borderRadius: '50%',
-    //                   background: getStatusColor(project.status)
-    //                 }}></div>
-    //                 <span style={{ fontWeight: '500', color: '#1F2937', fontSize: '14px' }}>
-    //                   {project.type || 'Unknown Project'}
-    //                 </span>
-    //                 <span style={{
-    //                   background: getPriorityColor(project.priority),
-    //                   color: 'white',
-    //                   padding: '2px 6px',
-    //                   borderRadius: '4px',
-    //                   fontSize: '10px',
-    //                   fontWeight: '500'
-    //                 }}>
-    //                   {project.priority || 'MEDIUM'}
-    //                 </span>
-    //               </div>
-    //               <div style={{ fontSize: '12px', color: '#6B7280', marginBottom: '8px' }}>
-    //                 {project.client?.name || 'No Client'}
-    //               </div>
-    //               <div style={{
-    //                 display: 'flex',
-    //                 justifyContent: 'space-between',
-    //                 alignItems: 'center'
-    //               }}>
-    //                 <span style={{ fontSize: '12px', color: '#6B7280' }}>
-    //                   {getProgressPercentage(project.steps)}% Complete
-    //                 </span>
-    //                 <div style={{
-    //                   width: '60px',
-    //                   height: '4px',
-    //                   background: '#F3F4F6',
-    //                   borderRadius: '2px',
-    //                   overflow: 'hidden'
-    //                 }}>
-    //                   <div style={{
-    //                     width: `${getProgressPercentage(project.steps)}%`,
-    //                     height: '100%',
-    //                     background: getStatusColor(project.status),
-    //                     borderRadius: '2px'
-    //                   }}></div>
-    //                 </div>
-    //               </div>
-    //             </div>
-    //           ))}
-    //         </div>
-    //       </div>
-    //       {/* All Projects Table */}
-    //       <div>
-    //         <div style={{
-    //           display: 'flex',
-    //           justifyContent: 'space-between',
-    //           alignItems: 'center',
-    //           marginBottom: '20px'
-    //         }}>
-    //           <h3 style={{ 
-    //             fontSize: '18px', 
-    //             fontWeight: '600', 
-    //             color: '#1F2937' 
-    //           }}>
-    //             All Project Table
-    //           </h3>
-    //           <MoreHorizontal size={20} color="#6B7280" style={{ cursor: 'pointer' }} />
-    //         </div>
-    //         <div style={{
-    //           background: 'white',
-    //           borderRadius: '12px',
-    //           overflow: 'hidden',
-    //           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)'
-    //         }}>
-    //           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-    //             <thead>
-    //               <tr style={{ background: '#F8FAFC' }}>
-    //                 <th style={{
-    //                   padding: '15px',
-    //                   textAlign: 'left',
-    //                   fontWeight: '500',
-    //                   fontSize: '14px',
-    //                   color: '#6B7280'
-    //                 }}>
-    //                   Project Name
-    //                 </th>
-    //                 <th style={{
-    //                   padding: '15px',
-    //                   textAlign: 'left',
-    //                   fontWeight: '500',
-    //                   fontSize: '14px',
-    //                   color: '#6B7280'
-    //                 }}>
-    //                   Client Name
-    //                 </th>
-    //                 <th style={{
-    //                   padding: '15px',
-    //                   textAlign: 'left',
-    //                   fontWeight: '500',
-    //                   fontSize: '14px',
-    //                   color: '#6B7280'
-    //                 }}>
-    //                   Assigned to
-    //                 </th>
-    //               </tr>
-    //             </thead>
-    //             <tbody>
-    //               {projects.map((project) => (
-    //                 <tr key={project.id} style={{ borderBottom: '1px solid #F1F5F9' }}>
-    //                   <td style={{ padding: '15px' }}>
-    //                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-    //                       <div style={{
-    //                         color: getStatusColor(project.status),
-    //                         display: 'flex'
-    //                       }}>
-    //                         {getStatusIcon(project.status)}
-    //                       </div>
-    //                       <div>
-    //                         <div style={{ fontWeight: '500', color: '#1F2937', fontSize: '14px' }}>
-    //                           {project.type || 'Unknown Project'}
-    //                         </div>
-    //                         <div style={{ fontSize: '12px', color: '#6B7280' }}>
-    //                           {getProgressPercentage(project.steps)}% Complete
-    //                         </div>
-    //                       </div>
-    //                     </div>
-    //                   </td>
-    //                   <td style={{ padding: '15px' }}>
-    //                     <div style={{ fontWeight: '500', color: '#1F2937', fontSize: '14px' }}>
-    //                       {project.client?.name || 'No Client'}
-    //                     </div>
-    //                     <div style={{ fontSize: '12px', color: '#6B7280' }}>
-    //                       {project.client?.email || 'No Email'}
-    //                     </div>
-    //                   </td>
-    //                   <td style={{ padding: '15px' }}>
-    //                     <span style={{
-    //                       background: '#F3F4F6',
-    //                       color: '#6B7280',
-    //                       padding: '4px 8px',
-    //                       borderRadius: '6px',
-    //                       fontSize: '12px'
-    //                     }}>
-    //                       Team Lead
-    //                     </span>
-    //                   </td>
-    //                 </tr>
-    //               ))}
-    //             </tbody>
-    //           </table>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
-    <div className={styles.mainProject}>
-       <div className={styles.header}>
-   <div className={styles.btnCard}>
-     <button>Add New Project</button>
-     <button>Ongoing Projects </button>
-   <button>History & Details </button>
-  </div>
- </div>
+    <div className={styles.dashboardMain}>
+      {/* Top Card + Graph */}
+      <motion.div
+        className={styles.topCard}
+        initial={{ opacity: 0, y: -24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={spring}
+      >
+        <div className={styles.topLeft}>
+          <div className={styles.ordersTitle}>Total Orders</div>
+          <div className={styles.date}>{formatDate(now)}</div>
+          <div className={styles.ordersCount}>
+            <span>{formatStat(totalOrders)}</span>
+            <span className={styles.upStat}>{weekChange} <TrendingUp size={16} /></span>
+          </div>
+        </div>
+        <div className={styles.topRight}>
+          <ResponsiveContainer width="100%" height={110}>
+            <AreaChart data={ordersByDay} margin={{ top: 16, right: 24, left: 0, bottom: 0 }}>
+              <defs>
+                <linearGradient id="colorOrders" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#2974e5" stopOpacity={0.23} />
+                  <stop offset="80%" stopColor="#2974e5" stopOpacity={0.03} />
+                </linearGradient>
+              </defs>
+              <XAxis dataKey="day" axisLine={false} tickLine={false} fontSize={13} />
+              <YAxis hide domain={[100, 400]} />
+              <Tooltip
+                contentStyle={{ background: "#fff", borderRadius: 8, border: "none", boxShadow: "0 3px 15px #aac5e433" }}
+                labelStyle={{ color: "#344050", fontWeight: 700 }}
+                formatter={(val) => <b style={{ color: "#2974e5" }}>{val}</b>}
+              />
+              <Area
+                type="monotone"
+                dataKey="orders"
+                stroke="#2974e5"
+                strokeWidth={3}
+                fillOpacity={1}
+                fill="url(#colorOrders)"
+                activeDot={{ r: 7, style: { fill: "#2974e5" } }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+          <button className={styles.filterBtn}>
+            Weekly <ChevronRight size={17} />
+          </button>
+        </div>
+      </motion.div>
+
+      {/* Stat Cards */}
+      <motion.div className={styles.cardsRow} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.1 }}>
+        <div className={styles.statCard}>
+          <div className={styles.cardTitle}>Active Projects</div>
+          <div className={styles.statValue}>{formatStat(ongoingOrders)}</div>
+          <div className={styles.cardSubRow}>
+            <span className={styles.statSub}>This Week</span>
+            <span className={styles.statBadge}>↑ 10%</span>
+          </div>
+        </div>
+        <div className={styles.statCard}>
+          <div className={styles.cardTitle}>Ongoing Projects</div>
+          <div className={styles.statValue}>{formatStat(ongoingOrders)}</div>
+          <div className={styles.cardSubRow}>
+            <span className={styles.statSub}>This Week</span>
+            <div className={styles.progressBarOuter}>
+              <div className={styles.progressBarInner} style={{ width: "70%" }} />
+              <span className={styles.progressLabel}>3rd step</span>
+            </div>
+            <span className={styles.progressPct}>70%</span>
+          </div>
+        </div>
+        <div className={styles.statCard}>
+          <div className={styles.cardTitle}>Pending Projects</div>
+          <div className={styles.statValue}>{formatStat(pendingOrders)}</div>
+          <div className={styles.cardSubRow}>
+            <span className={styles.statSub}>This Week</span>
+            <span className={styles.statBadge}>↑ 10%</span>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Bottom: Pie Chart + History */}
+      <div className={styles.bottomSection}>
+        <motion.div className={styles.goalCard} initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }}>
+          <div className={styles.goalTitle}>You've almost reached your goal</div>
+          <div className={styles.goalSub}>
+            75% of your goals are completed just complete 25% of remaining goals to achieve your target.
+          </div>
+          <div className={styles.pieWrap}>
+            <ResponsiveContainer width="98%" height={120}>
+              <PieChart>
+                <Pie
+                  data={pieStats}
+                  dataKey="value"
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={32}
+                  outerRadius={53}
+                  labelLine={false}
+                  paddingAngle={3}
+                  isAnimationActive
+                >
+                  {pieStats.map((entry, idx) => (
+                    <Cell key={entry.name} fill={COLORS[idx % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Legend iconType="circle" verticalAlign="bottom" align="center"
+                  wrapperStyle={{ fontSize: "13px", marginTop: "8px" }} />
+              </PieChart>
+            </ResponsiveContainer>
+            <div className={styles.pieLabels}>
+              {pieStats.map((d, i) => (
+                <div key={d.name} style={{ color: COLORS[i], fontWeight: 600, fontSize: "13px", marginRight: 16 }}>
+                  {d.name}
+                </div>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+        <motion.div className={styles.historyCard} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }}>
+          <div className={styles.historyHeader}>
+            <div>History & Details</div>
+            <button className={styles.seeAllBtn}>See all</button>
+          </div>
+          <div className={styles.historyList}>
+            {historyList.map((h, idx) => (
+              <div className={styles.historyRow} key={idx}>
+                <div>
+                  <div className={styles.taskName}>{h.name}</div>
+                  <div className={styles.historyDate}>{h.date}</div>
+                </div>
+                <div className={styles.statusRight}>
+                  {getStatusDot(h.status)}
+                  <span className={styles.statusTxt}>{h.status}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
     </div>
   );
-};
-export default Dashboard;
+}

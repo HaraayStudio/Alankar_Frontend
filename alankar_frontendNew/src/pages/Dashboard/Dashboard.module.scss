@@ -223,7 +223,7 @@
     }
     .clientsSidebar {
       flex: 0 0 280px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(226, 223, 223, 0.1);
       border-radius: 16px;
       padding: 16px;
       overflow-y: auto;
@@ -244,7 +244,7 @@
         }
         &.active {
           border-radius: 30px;
-          background: var(--Colour-1st-Colour, #1D5B86);
+background: #0584FE;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
           color: var(--Colour-White, #FFF);
           font-family: Arial;
@@ -724,10 +724,392 @@
   }
 }
 //sec 3 ----------------------------------------------------
+/* Dashboard.module.scss */
+
 .sec3 {
+  margin-top: 32px;
+  padding: 0 16px;
   width: 100%;
-  img{
+  box-sizing: border-box;
+}
+
+.paymentsInvoicesSection {
+  display: flex;
+  gap: 32px;
+  width: 100%;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  @media (max-width: 950px) {
+    flex-direction: column;
+    gap: 18px;
+  }
+}
+
+/* ---- PAYMENTS CARD ---- */
+.paymentsCard {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 8px 32px rgba(80, 140, 255, 0.12), 0 1.5px 3px #e9eefc;
+  border-radius: 24px;
+  padding: 32px 28px 20px 28px;
+  min-width: 320px;
+  flex: 1 1 360px;
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  @media (max-width: 700px) {
+    padding: 22px 12px 14px 12px;
+    min-width: 0;
+    max-width: unset;
+  }
+}
+
+.payHeader {
+  .payTitle {
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: #094ea7;
+    margin-bottom: 2px;
+    letter-spacing: 0.01em;
+  }
+  .payAmount {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #104264;
+    margin-bottom: 3px;
+    margin-top: 2px;
+    letter-spacing: 0.01em;
+  }
+  .payGrowth {
+    font-size: 0.98rem;
+    color: #34a853;
+    font-weight: 500;
+    margin-right: 15px;
+    display: inline-block;
+    & + .payGrowth {
+      color: #0090ff;
+    }
+  }
+}
+
+.payTabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 2px;
+  .dropdown {
+    button {
+      background: #f5f9ff;
+      color: #094ea7;
+      border: 1.5px solid #b8d3ff;
+      font-weight: 600;
+      font-size: 0.98rem;
+      border-radius: 18px;
+      padding: 5px 18px 5px 12px;
+      outline: none;
+      transition: border 0.15s;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      &:hover {
+        border-color: #4298eb;
+        background: #e8f3ff;
+      }
+    }
+  }
+}
+
+.payDuesHeader {
+  font-size: 1.07rem;
+  color: #094ea7;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .seeAll {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #427ff3;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.duesList {
+  margin-top: 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 230px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #cbe1ff #e8f3ff;
+}
+
+/* --- Due Card --- */
+.dueCard {
+  background: linear-gradient(97deg, #f6fbff 80%, #e6f1fa 100%);
+  border-radius: 15px;
+  padding: 14px 18px 10px 18px;
+  box-shadow: 0 1px 4px rgba(33, 108, 192, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  border: 1.5px solid #e4ecff;
+  position: relative;
+}
+
+.dueCardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .invNumber {
+    font-weight: 700;
+    color: #094ea7;
+    font-size: 1.09rem;
+  }
+  .invAmt {
+    font-weight: 700;
+    color: #dc3545;
+    font-size: 1.05rem;
+  }
+}
+
+.dueCardInfo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.98rem;
+  color: #094ea7;
+  .clientName {
+    font-weight: 600;
+  }
+  .invDate {
+    color: #777;
+    font-size: 0.97rem;
+    font-weight: 500;
+  }
+}
+
+.paymentsDetail {
+  background: #f7fbff;
+  border-radius: 10px;
+  padding: 8px 10px 4px 10px;
+  margin-top: 6px;
+  .paymentHeader {
+    font-size: 0.98rem;
+    color: #225cc0;
+    font-weight: 600;
+    margin-bottom: 3px;
+  }
+}
+
+.paymentRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 22px;
+  align-items: center;
+  font-size: 0.97rem;
+  margin-bottom: 2px;
+  .label {
+    color: #97a8be;
+    font-weight: 500;
+    margin-right: 2px;
+  }
+  .value {
+    color: #222;
+    font-weight: 600;
+  }
+}
+
+.statusBadge {
+  padding: 1.5px 11px;
+  font-size: 0.92rem;
+  border-radius: 13px;
+  font-weight: 600;
+  color: #fff !important;
+  margin-left: 2px;
+}
+
+.noPaymentInfo, .noSelection {
+  font-size: 0.99rem;
+  color: #aaa;
+  font-style: italic;
+  padding: 8px 0 2px 0;
+  text-align: left;
+}
+
+/* --- INVOICES CARD --- */
+.invoicesCard {
+  background: rgba(255, 255, 255, 0.97);
+  box-shadow: 0 8px 32px rgba(48, 121, 209, 0.13), 0 1.5px 3px #e9eefc;
+  border-radius: 24px;
+  padding: 32px 28px 20px 28px;
+  min-width: 320px;
+  flex: 1 1 350px;
+  max-width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  @media (max-width: 700px) {
+    padding: 22px 12px 14px 12px;
+    min-width: 0;
+    max-width: unset;
+  }
+}
+
+.invHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .invTitle {
+    font-size: 1.11rem;
+    font-weight: 700;
+    color: #094ea7;
+  }
+  .invSelectBtn {
+    font-size: 0.99rem;
+    background: #edf3fe;
+    color: #427ff3;
+    font-weight: 600;
+    border-radius: 11px;
+    padding: 4px 13px 4px 11px;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: background 0.13s;
+    &:hover {
+      background: #d3e6ff;
+    }
+  }
+}
+
+.bankBlock {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #e6f1fa;
+  border-radius: 13px;
+  padding: 8px 12px 8px 10px;
+  margin: 7px 0 8px 0;
+  .bankIcon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(120deg, #3a84e7 60%, #97c7fa 100%);
+    display: inline-block;
+  }
+  .bankName {
+    font-weight: 700;
+    color: #094ea7;
+    font-size: 1.01rem;
+  }
+  .bankAcc {
+    font-size: 0.95rem;
+    color: #444;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  .viewMoreBtn {
+    margin-left: auto;
+    background: #edf3fe;
+    color: #427ff3;
+    font-weight: 600;
+    border-radius: 11px;
+    padding: 4px 13px 4px 11px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.99rem;
+    transition: background 0.14s;
+    &:hover {
+      background: #d3e6ff;
+    }
+  }
+}
+
+.invListBlock {
+  display: flex;
+  gap: 10px;
+  min-height: 70px;
+  max-height: 230px;
+  overflow-y: auto;
+  padding-bottom: 3px;
+  .invListCol {
+    flex: 1;
+    min-width: 140px;
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+  }
+}
+
+.invClientRow {
+  background: #f6fbff;
+  border-radius: 11px;
+  padding: 10px 11px 8px 11px;
+  box-shadow: 0 1px 2.5px #e4ecff;
+  border: 1.3px solid #e9eefc;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.97rem;
+  .invClientInfo {
+    display: flex;
+    flex-direction: column;
+    .clientName {
+      font-weight: 600;
+      color: #094ea7;
+    }
+    .invNumber {
+      color: #4b647a;
+      font-size: 0.97rem;
+      font-weight: 500;
+    }
+  }
+  .invDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    .invAmount {
+      font-weight: 700;
+      color: #1f6edc;
+    }
+    .invDate {
+      color: #888;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #f1f6ff;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbe1ff;
+  border-radius: 6px;
+}
+
+@media (max-width: 600px) {
+  .paymentsInvoicesSection {
+    flex-direction: column;
+    gap: 18px;
+  }
+  .paymentsCard,
+  .invoicesCard {
+    min-width: 0;
+    max-width: 100%;
     width: 100%;
-    display: block;
+    padding: 13px 7px 10px 7px;
   }
 }

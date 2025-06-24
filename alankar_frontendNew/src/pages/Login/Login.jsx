@@ -18,7 +18,7 @@ const Login = () => {
       const response = await login(email, password);
       const token = response.data.accessToken;
       setAuthToken(token);
-      navigate('/dashboard');
+      navigate('/');
     } catch (error) {
       alert('Login failed!');
     }

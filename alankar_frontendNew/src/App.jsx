@@ -47,7 +47,7 @@ const AppRoutes = () => {
         }
       >
         <Route path="/price" element={<EditPrintPrices />} />
-        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />} />
         <Route path="projects" element={<Projects />} />
         <Route path="projects/new" element={<AddProject />} />
         <Route path="projects/ongoing" element={<OngoingProjects />} />

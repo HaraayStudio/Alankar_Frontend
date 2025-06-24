@@ -737,7 +737,7 @@ const QuotationPopup = ({ open, onClose, presale, onQuotationAdded }) => {
                           <td className={styles.action}>
                             <button
                               className={styles.statusBtn}
-                              onClick={() => handleStatusUpdate(quotation)}
+                              onClick={() => handleStatusUpdate(quotation) && onClose()}
                               disabled={statusUpdating === quotation.quotationNumber}
                             >
                               {statusUpdating === quotation.quotationNumber

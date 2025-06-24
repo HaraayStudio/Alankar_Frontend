@@ -139,8 +139,9 @@
 import React, { useRef } from "react";
 import styles from "./InvoicePreview.module.scss";
 import logo from "../../assets/logo_vertical.png";
-import { X, Printer, FileDown } from "lucide-react";
+import { X,Share2 ,Printer, FileDown } from "lucide-react";
 import html2pdf from "html2pdf.js";
+import { useData } from "../../context/DataContext";
 // Date formatter
 function formatDate(dateStr) {
   if (!dateStr) return "-";
@@ -151,6 +152,7 @@ function formatDate(dateStr) {
 export default function InvoicePreview({ postsale, onClose }) {
   const invoiceRef = useRef();
   // Print handler
+  const { handleSendPostSaleMail } = useData();
   const handlePrint = () => {
     const printContents = invoiceRef.current.innerHTML;
     const win = window.open('', '', 'width=900,height=900');
@@ -206,6 +208,7 @@ export default function InvoicePreview({ postsale, onClose }) {
   const client = postsale?.client || {};
   const toName = client.clientName || "-";
   const toEmail = client.email || "";
+  const invoiceNumber = postsale?.invoice?.invoiceNumber
   const toPhone = client.phone || "";
   const invoiceNo = postsale?.srNumber ? `INV-${String(postsale.srNumber).padStart(3,"0")}` : "Invoice";
   const invoiceDate = postsale?.order?.createdAtDateTime ? formatDate(postsale.order.createdAtDateTime) : "-";
@@ -216,6 +219,7 @@ export default function InvoicePreview({ postsale, onClose }) {
   // Price details
   const estimatedQuote = Number(postsale?.estimatedQuote || 0);
   const negotiationPrice = Number(postsale?.negotiationPrice || 0);
+  const unitPrice = Number(postsale?.unitPrice || 0);
   const baseAmount = Number(postsale?.finalAmtWithOutGST || 0);
   const gstPercent = Number(postsale?.gstPercentage || 0);
   const gstAmount = Math.round(baseAmount * gstPercent / 100);
@@ -229,12 +233,20 @@ export default function InvoicePreview({ postsale, onClose }) {
         <button className={styles.closeBtn} onClick={onClose}><X size={22} /></button>
         {/* Print & PDF Buttons */}
         <div className={styles.actionBar}>
-          <button onClick={handlePrint} className={styles.actionBtn} title="Print Invoice">
+          {/* <button onClick={handlePrint} className={styles.actionBtn} title="Print Invoice">
             <Printer size={18} /> Print
-          </button>
+          </button> */}
           <button onClick={handleDownloadPDF} className={styles.actionBtn} title="Download PDF">
             <FileDown size={18} /> PDF
-          </button>
+          </button>{
+          console.log(invoiceNumber)}
+         <button
+  onClick={() => handleSendPostSaleMail(invoiceNumber)}
+  className={styles.actionBtn}
+  title="Download PDF"
+>
+  <Share2 size={18} /> Send Via Mail
+</button>
         </div>
         {/* Printable content */}
         <div ref={invoiceRef}>
@@ -275,6 +287,7 @@ export default function InvoicePreview({ postsale, onClose }) {
                 <th>Sr.</th>
                 <th>Description</th>
                 <th>Qty</th>
+                <th>Unit Price</th>
                 <th>Base Amt</th>
                 <th>GST %</th>
                 <th>GST Amt</th>
@@ -295,6 +308,7 @@ export default function InvoicePreview({ postsale, onClose }) {
                   )}
                 </td>
                 <td>{qty}</td>
+                <td>{unitPrice}</td>
                 <td>₹{baseAmount.toLocaleString()}</td>
                 <td>{gstPercent}%</td>
                 <td>₹{gstAmount.toLocaleString()}</td>
@@ -318,6 +332,7 @@ export default function InvoicePreview({ postsale, onClose }) {
           {/* Remarks */}
         <div className={styles.remarksRow}  style={{ display: 'flex', alignItems: 'center' , justifyContent: 'space-between' }}>
   <b>Scan to Pay:</b>
+ <a href={remark}>{remark}</a>
   <img 
     src={`https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(remark)}`} 
     alt="QR Code for Remarks" 

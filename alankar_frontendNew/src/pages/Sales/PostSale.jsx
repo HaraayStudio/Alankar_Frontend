@@ -65,7 +65,7 @@ const PostSalesPage = () => {
       </div>
       <div className={styles.postSaleDiv}>
       <div className={styles.header}>
-        <h1>Post-Sales</h1>
+      <span className={styles.pageTitle}>Post-Sales</span>
         <button className={styles.addButton}><Plus size={18} />Add PostSales</button>
       </div>
       <div className={styles.tableContainer}>
