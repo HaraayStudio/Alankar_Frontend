@@ -1,0 +1,446 @@
+.invoicePageWrap {
+  padding: 32px 12px 24px 12px;
+  min-height: 100vh;
+  background: none;
+}
+
+.tableCard {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 24px 0 rgba(16, 83, 164, 0.10);
+  padding: 0 0 12px 0;
+  overflow: hidden;
+}
+
+.tableHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 32px 8px 32px;
+}
+
+.tableTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #222b44;
+  letter-spacing: 0.01em;
+}
+
+.periodBtn {
+  background: #e8f2ff;
+  color: #3967af;
+  font-size: 15px;
+  border: none;
+  border-radius: 16px;
+  padding: 5px 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.16s;
+  outline: none;
+  &:hover {
+    background: #d3e8ff;
+  }
+}
+
+.tableScrollWrap {
+  overflow-x: auto;
+  padding-bottom: 3px;
+}
+
+.invoiceTable {
+  width: 100%;
+  min-width: 1100px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: none;
+  font-size: 15px;
+
+  thead th {
+    background: #e9f2ff;
+    color: #364769;
+    font-weight: 600;
+    padding: 12px 8px;
+    border-bottom: 1px solid #e3e8f1;
+    border-radius: 14px 14px 0 0;
+    font-size: 15px;
+    text-align: left;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    background: transparent;
+    transition: background 0.11s;
+    &:hover {
+      background: #f4faff;
+    }
+  }
+
+  tbody td {
+    padding: 13px 8px;
+    border-bottom: 1px solid #f1f3f8;
+    color: #222b44;
+    font-size: 15px;
+    vertical-align: middle;
+  }
+}
+
+.statusBadge {
+  display: inline-block;
+  min-width: 84px;
+  text-align: center;
+  border-radius: 12px;
+  padding: 2.5px 0;
+  font-size: 14px;
+  font-weight: 600;
+  background: #f3f5fb;
+  color: #555;
+  &.statusCompleted {
+    background: #e4f7ea;
+    color: #21af61;
+  }
+  &.statusPending {
+    background: #fff6e1;
+    color: #ef9100;
+  }
+  &.statusDefault {
+    background: #d7e9fa;
+    color: #225389;
+  }
+}
+
+.actionBtn {
+  border: none;
+  background: transparent;
+  margin-right: 4px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.13s;
+  svg {
+    color: #26394d;
+    transition: color 0.16s;
+  }
+  &:hover {
+    background: #f0f6fd;
+    svg {
+      color: #0b63c7;
+    }
+  }
+}
+
+.modalBackdrop {
+  position: fixed;
+  z-index: 1010;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(29,48,89,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeInModal 0.18s;
+}
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 12px 38px 0 rgba(18,56,114,0.13);
+  min-width: 370px;
+  max-width: 98vw;
+  width: 460px;
+  padding: 26px 32px 22px 32px;
+  position: relative;
+  animation: popInModal 0.17s;
+}
+@keyframes popInModal {
+  from { transform: translateY(45px) scale(.96); opacity: 0.78; }
+  to   { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.modalClose {
+  position: absolute;
+  top: 14px;
+  right: 15px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  color: #9cb5c6;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 6px;
+  transition: background 0.16s;
+  &:hover {
+    background: #f5f8fc;
+    color: #3363b4;
+  }
+}
+
+.modalTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0e264d;
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.modalDetailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 20px;
+  margin-bottom: 20px;
+  .modalDetailsBox {
+    font-size: 15px;
+    color: #5b6990;
+    padding: 7px 0 5px 0;
+    white-space: pre-line;
+    border-radius: 4px;
+  }
+}
+
+.modalPaymentsSection {
+  margin-top: 4px;
+  .modalSectionTitle {
+    font-size: 17px;
+    font-weight: 600;
+    color: #2376d2;
+    margin-bottom: 7px;
+  }
+  .paymentsTable {
+    width: 100%;
+    border-collapse: collapse;
+    thead th {
+      font-size: 15px;
+      background: #f7fafd;
+      color: #3c5b89;
+      font-weight: 500;
+      padding: 7px 4px;
+      text-align: left;
+    }
+    tbody td {
+      font-size: 15px;
+      color: #253b57;
+      padding: 7px 4px;
+      border-bottom: 1px solid #f0f4fa;
+      vertical-align: middle;
+    }
+  }
+}
+
+.noPayments {
+  padding: 12px 0 5px 0;
+  color: #a1b3c2;
+  font-size: 15px;
+}
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(25, 41, 67, 0.23);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalCard {
+  position: relative;
+  background: #fff;
+  border-radius: 1.4rem;
+  box-shadow: 0 6px 36px 0 rgba(18,50,99,0.13);
+  min-width: 370px;
+  max-width: 510px;
+  padding: 32px 32px 22px 32px;
+  display: flex;
+  flex-direction: column;
+  animation: popUpModal 0.22s cubic-bezier(.5,1.7,.7,1) both;
+  overflow: hidden;
+}
+
+@keyframes popUpModal {
+  0% { opacity: 0; transform: translateY(26px) scale(0.97);}
+  100% { opacity: 1; transform: translateY(0) scale(1);}
+}
+
+.modalClose {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  background: rgba(5,132,254,0.12);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  color: #085ff7;
+  cursor: pointer;
+  transition: background 0.18s, color 0.12s;
+  z-index: 2;
+  &:hover {
+    background: #0584FE;
+    color: #fff;
+  }
+}
+
+.modalTitle {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 1.32rem;
+  font-weight: 600;
+  color: #205081;
+  margin-bottom: 18px;
+  .invoiceNum {
+    background: #f1f8fe;
+    color: #0584fe;
+    border-radius: 16px;
+    padding: 4px 12px;
+    font-size: 0.95rem;
+    margin-left: 18px;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+  }
+}
+
+.modalDetailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 22px;
+  margin-bottom: 22px;
+  .label {
+    display: block;
+    font-size: 12px;
+    color: #8da1b8;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+  .value {
+    color: #23476c;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.1px;
+    display: block;
+  }
+}
+
+.detailsSection {
+  margin-bottom: 20px;
+  .label {
+    color: #2069a6;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1px;
+    margin-bottom: 4px;
+    display: block;
+  }
+  .detailsBox {
+    background: #f6f8fa;
+    color: #313b4c;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 14.1px;
+    box-shadow: 0 1.5px 6px rgba(80,120,200,0.06);
+    min-height: 34px;
+    margin-top: 4px;
+  }
+}
+
+.modalPaymentsSection {
+  margin-top: 18px;
+  .sectionTitle {
+    color: #2674e0;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    letter-spacing: 0.08em;
+  }
+  .noPayments {
+    color: #9fb7cb;
+    font-size: 14px;
+    margin: 9px 0 4px 0;
+    text-align: left;
+  }
+}
+
+.paymentsTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 2px;
+  background: #f7fbfe;
+  border-radius: 7px;
+  overflow: hidden;
+  box-shadow: 0 1.5px 7px rgba(68,120,200,0.07);
+  th, td {
+    padding: 8px 9px;
+    text-align: left;
+    font-size: 13.5px;
+  }
+  th {
+    background: #eaf4ff;
+    color: #177de7;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  td {
+    color: #355273;
+    font-weight: 500;
+    background: transparent;
+    border-bottom: 1.5px solid #f2f7fd;
+    &:last-child {
+      color: #0969da;
+      font-weight: 600;
+    }
+  }
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.payLink {
+  color: #0d78f7;
+  font-weight: 700;
+  text-decoration: underline;
+  &:hover {
+    color: #0584FE;
+    text-decoration: none;
+  }
+}
+
+.statusBadge {
+  padding: 4px 12px;
+  border-radius: 11px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+  background: #e7f1fd;
+  color: #2674e0;
+  margin-right: 5px;
+  text-transform: capitalize;
+  &.pending, &.Pending {
+    background: #ffe9be;
+    color: #f2a103;
+  }
+  &.completed, &.Completed {
+    background: #d4f9e8;
+    color: #27cb7a;
+  }
+  &.failed, &.Failed {
+    background: #fde9ec;
+    color: #e25051;
+  }
+}
+
+@media (max-width: 600px) {
+  .modalCard {
+    padding: 16px 7px 14px 7px;
+    min-width: 97vw;
+    max-width: 98vw;
+  }
+  .modalDetailsGrid {
+    grid-template-columns: 1fr;
+    gap: 9px 0;
+  }
+}

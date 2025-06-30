@@ -1,0 +1,163 @@
+.paymentsPageWrap {
+  padding: 32px 10px 24px 10px;
+  min-height: 100vh;
+  background: none;
+}
+.statsCardGrid {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 22px;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+.statCard {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 18px 0 rgba(16, 83, 164, 0.08);
+  min-width: 210px;
+  flex: 1 0 210px;
+  padding: 20px 23px 17px 23px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .statTitle {
+    font-size: 17px;
+    font-weight: 600;
+    color: #272d47;
+    margin-bottom: 4px;
+    span {
+      font-size: 12px;
+      margin-left: 7px;
+      color: #33be82;
+      font-weight: 500;
+    }
+  }
+  .statMain {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1b223a;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+  }
+  .statSub {
+    font-size: 13.8px;
+    color: #3d3d3d;
+    .statSubGreen { color: #27c071; font-weight: 700; margin-right: 6px; }
+    .statSubRed { color: #fe4756; font-weight: 700; margin-right: 6px; }
+  }
+}
+
+.tableCard {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 2px 24px 0 rgba(16, 83, 164, 0.10);
+  padding: 0 0 12px 0;
+  overflow: hidden;
+}
+.tableHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 32px 8px 32px;
+}
+.tableTitle {
+  font-size: 22px;
+  font-weight: 600;
+  color: #222b44;
+  letter-spacing: 0.01em;
+}
+.periodBtn {
+  background: #e8f2ff;
+  color: #3967af;
+  font-size: 15px;
+  border: none;
+  border-radius: 16px;
+  padding: 5px 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.16s;
+  outline: none;
+  &:hover {
+    background: #d3e8ff;
+  }
+}
+.tableScrollWrap {
+  overflow-x: auto;
+  padding-bottom: 3px;
+}
+.paymentsTable {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: none;
+  font-size: 15px;
+  thead th {
+    background: #e9f2ff;
+    color: #364769;
+    font-weight: 600;
+    padding: 12px 8px;
+    border-bottom: 1px solid #e3e8f1;
+    border-radius: 14px 14px 0 0;
+    font-size: 15px;
+    text-align: left;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  tbody tr {
+    background: transparent;
+    transition: background 0.11s;
+    &:hover {
+      background: #f4faff;
+    }
+  }
+  tbody td {
+    padding: 13px 8px;
+    border-bottom: 1px solid #f1f3f8;
+    color: #222b44;
+    font-size: 15px;
+    vertical-align: middle;
+  }
+}
+.statusBadge {
+  display: inline-block;
+  min-width: 84px;
+  text-align: center;
+  border-radius: 12px;
+  padding: 2.5px 0;
+  font-size: 14px;
+  font-weight: 600;
+  background: #f3f5fb;
+  color: #555;
+  &.statusCompleted {
+    background: #e4f7ea;
+    color: #21af61;
+  }
+  &.statusPending {
+    background: #fff6e1;
+    color: #ef9100;
+  }
+  &.statusDefault {
+    background: #d7e9fa;
+    color: #225389;
+  }
+}
+.actionBtn {
+  border: none;
+  background: transparent;
+  margin-right: 4px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: background 0.13s;
+  svg {
+    color: #26394d;
+    transition: color 0.16s;
+  }
+  &:hover {
+    background: #f0f6fd;
+    svg {
+      color: #0b63c7;
+    }
+  }
+}

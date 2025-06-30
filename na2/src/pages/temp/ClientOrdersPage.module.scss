@@ -1,0 +1,155 @@
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+.heading {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+  color: #1c355b;
+}
+.tableWrap {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 24px rgba(30,48,110,0.08);
+  padding: 8px 12px 16px 12px;
+  overflow-x: auto;
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+  th, td {
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e8e8ef;
+  }
+  th {
+    background: #f6f8fb;
+    color: #003160;
+    font-weight: 600;
+  }
+}
+.contact {
+  font-size: 1rem;
+}
+.email {
+  color: #0085ff;
+  font-size: 0.92em;
+}
+.ordersBtn {
+  padding: 6px 16px;
+  background: #1c355b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.18s;
+  &:hover {
+    background: #0071ce;
+  }
+}
+.statusBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 1em;
+  font-size: 0.93em;
+  font-weight: 600;
+  &.pending { background: #fff5ea; color: #de5e00; }
+  &.completed { background: #d6ffea; color: #01a668; }
+  &.ongoing { background: #e3eaff; color: #3960e3; }
+}
+.popupOverlay {
+    z-index: +999;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(30, 38, 73, 0.19);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.popup {
+    z-index: 9999;
+  background: #fff;
+  padding: 0 0 24px 0;
+  min-width: 800px;
+  border-radius: 18px;
+  box-shadow: 0 8px 44px rgba(24,44,81,0.16);
+  position: relative;
+  animation: popupScaleIn 0.17s cubic-bezier(.47,1.64,.41,.8);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+@keyframes popupScaleIn {
+  0% { transform: scale(0.96); opacity: 0;}
+  100% { transform: scale(1); opacity: 1;}
+}
+.popupHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 32px 6px 32px;
+  border-bottom: 1px solid #f0f0f7;
+  background: #f7fbff;
+  border-radius: 18px 18px 0 0;
+}
+.clientTitle {
+  font-size: 1.18em;
+  font-weight: 600;
+  color: #1c355b;
+}
+.popupSubTitle {
+  font-size: 1em;
+  color: #889dc6;
+  margin-left: 16px;
+}
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: #333;
+  padding: 3px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.16s;
+  &:hover { background: #e6eaf3;}
+}
+.ordersListWrap {
+  padding: 18px 32px 0 32px;
+}
+.ordersTable {
+  width: 100%;
+  border-collapse: collapse;
+  th, td {
+    padding: 7px 9px;
+    border-bottom: 1px solid #f0f0f7;
+    font-size: 0.96em;
+  }
+  th {
+    background: #f0f6ff;
+    color: #1747a3;
+    font-weight: 600;
+  }
+}
+.stepsList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stepName {
+  font-weight: 500;
+  color: #3555b4;
+}
+.measurement {
+  font-weight: 400;
+  color: #555;
+}
+@media (max-width: 950px) {
+  .popup, .ordersTable, .container {
+    min-width: 98vw;
+    padding: 4px !important;
+  }
+}

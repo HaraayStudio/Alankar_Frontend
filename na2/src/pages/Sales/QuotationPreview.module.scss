@@ -1,0 +1,337 @@
+// .previewBackdrop {
+//   position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;
+//   background: rgba(36,36,36,0.45); z-index: 9999;
+//   display: flex; align-items: center; justify-content: center;
+// }
+// .previewBox {
+//   background: #fff;
+//   border-radius: 14px;
+//   padding: 32px 36px 18px 36px;
+//   max-width: 530px;
+//   min-width: 390px;
+//   box-shadow: 0 6px 38px 0 #2224  ;
+//   position: relative;
+//   font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+//   animation: pop 0.18s cubic-bezier(.42,1.25,.54,1.03);
+// }
+// @keyframes pop {
+//   from { transform: scale(0.95); opacity: 0.5;}
+//   to { transform: scale(1); opacity: 1;}
+// }
+// .closeBtn {
+//   position: absolute;
+//   right: 18px;
+//   top: 18px;
+//   border: none;
+//   background: transparent;
+//   cursor: pointer;
+//   color: #aaa;
+//   transition: color 0.2s;
+//   &:hover { color: #333; }
+// }
+// .header {
+//   display: flex;
+//   align-items: center;
+//   margin-bottom: 12px;
+// }
+// .logo {
+//   font-weight: 700; font-size: 1.38rem; color: #f4a835; display: flex; align-items: center;
+// }
+// .logoIcon {
+//   background: #f4a835; color: #fff; border-radius: 7px;
+//   font-size: 1.1rem; width: 29px; height: 29px;
+//   display: flex; align-items: center; justify-content: center; margin-right: 8px;
+// }
+// .logoText { color: #222; font-size: 1.2rem; font-weight: 600; }
+// .adOrange { color: #f4a835; }
+// .title {
+//   font-size: 2.05rem;
+//   font-weight: 800;
+//   margin-bottom: 24px;
+//   letter-spacing: 0.03em;
+//   color: #111;
+// }
+// .quotationMeta {
+//   display: flex; justify-content: space-between;
+//   margin-bottom: 18px; font-size: 1rem;
+// }
+// .metaLeft { line-height: 1.48; }
+// .metaRight { text-align: left; line-height: 1.6; }
+// .detailsTable {
+//   width: 100%;
+//   border-collapse: collapse;
+//   margin-bottom: 15px;
+//   th, td { padding: 8px 10px; border: 1px solid #f1f1f1; }
+//   th { background: #f5f5f5; font-size: 1.02rem;}
+//   td { font-size: 1.04rem;}
+//   tfoot td { background: #fcf9f3; font-size: 1.05rem;}
+// }
+// .signNote {
+//   font-size: 0.97rem; margin: 18px 0 10px 0; color: #444;
+//   border-top: 1px solid #eee; padding-top: 10px;
+// }
+// .termsTitle {
+//   color: #f4a835; font-size: 1.02rem; font-weight: 700; margin-bottom: 3px;
+// }
+// .termsBody {
+//   font-size: 0.97rem;
+//   margin-bottom: 9px;
+//   color: #222;
+// }
+// .footer {
+//   font-size: 0.94rem;
+//   color: #333;
+//   margin-top: 14px;
+//   border-top: 1px solid #eee;
+//   padding-top: 7px;
+// }
+.previewBackdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 80vh;
+  background: rgba(36, 36, 36, 0.45);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.previewBox {
+  background: #fff;
+  border-radius: 14px;
+  padding: 32px 36px 18px 36px;
+  max-width: 530px;
+  min-width: 390px;
+// height: 100vh;
+  box-shadow: 0 6px 38px 0 rgba(34, 34, 34, 0.15);
+  position: relative;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  animation: pop 0.18s cubic-bezier(0.42, 1.25, 0.54, 1.03);
+}
+@keyframes pop {
+  from {
+    transform: scale(0.95);
+    opacity: 0.5;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.closeBtn {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.2s;
+  &:hover {
+    color: #333;
+  }
+}
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.logo {
+  font-weight: 700;
+  font-size: 1.38rem;
+  color: #f4a835;
+  display: flex;
+  align-items: center;
+  img {
+    max-height: 50px;
+    width: auto;
+  }
+}
+.logoIcon {
+  background: #f4a835;
+  color: #fff;
+  border-radius: 7px;
+  font-size: 1.1rem;
+  width: 29px;
+  height: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+.logoText {
+  color: #222;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.adOrange {
+  color: #f4a835;
+}
+.title {
+  font-size: 2.05rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  letter-spacing: 0.03em;
+  color: #111;
+}
+.quotationMeta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  font-size: 1rem;
+}
+.metaLeft {
+  line-height: 1.48;
+}
+.metaRight {
+  text-align: left;
+  line-height: 1.6;
+}
+.detailsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 15px;
+  th,
+  td {
+    padding: 8px 10px;
+    border: 1px solid #f1f1f1;
+  }
+  th {
+    background: #f5f5f5;
+    font-size: 1.02rem;
+    font-weight: 600;
+  }
+  td {
+    font-size: 1.04rem;
+  }
+  tfoot td {
+    background: #fcf9f3;
+    font-size: 1.05rem;
+  }
+}
+.rightAlign {
+  text-align: right;
+}
+.totalDueLabel {
+  text-align: right;
+  font-weight: bold;
+  color: #f4a835;
+}
+.totalDueAmount {
+  font-weight: bold;
+  color: #f4a835;
+}
+.signNote {
+  font-size: 0.97rem;
+  margin: 18px 0 10px 0;
+  color: #444;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+}
+.termsTitle {
+  color: #f4a835;
+  font-size: 1.02rem;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+.termsBody {
+  font-size: 0.97rem;
+  margin-bottom: 9px;
+  color: #222;
+}
+.footer {
+  font-size: 0.94rem;
+  color: #333;
+  margin-top: 14px;
+  border-top: 1px solid #eee;
+  padding-top: 7px;
+}
+// Path: alankar_frontendNew/src/pages/Sales/QuotationPreview.module.scss
+.previewBackdrop {
+  position: fixed; left: 0; top: 0; width: 100vw; height: 100vh;
+  background: rgba(36,36,36,0.23); z-index: 9999;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.previewBox {
+  background: #fff;
+  border-radius: 16px;
+  padding: 28px 30px 18px 30px;
+  max-width: 740px;
+  width: 100%;
+  min-width: 370px;
+  box-shadow: 0 6px 38px 0 #2223;
+  position: relative;
+  animation: pop 0.18s cubic-bezier(.42,1.25,.54,1.03);
+}
+@keyframes pop {
+  from { transform: scale(0.95); opacity: 0.5;}
+  to { transform: scale(1); opacity: 1;}
+}
+.closeBtn {
+  position: absolute; right: 14px; top: 14px;
+  border: none; background: transparent; cursor: pointer;
+  color: #aaa; font-size: 1.2rem;
+  &:hover { color: #f00; }
+}
+.headerRow {
+  display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;
+  .company { display: flex; align-items: flex-start; gap: 16px; }
+  .logo { height: 64px; margin-right: 8px;}
+  .compName { font-size: 2rem; font-weight: 700; color: #1291d0; letter-spacing: 0.03em;}
+  .compTagline { font-size: 1.1rem; color: #179ae1; font-weight: 500;}
+  .compAddr { color: #0b7ca7; font-size: 0.95rem;}
+  .qmeta { text-align: right; color: #333; font-size: 1.05rem;}
+}
+.hiQuoteRow {
+  width: 100%; margin-bottom: 6px;
+  .hiText {
+    font-size: 1.5rem; font-weight: 700;
+    color: #1291d0;
+    margin-bottom: 0.2rem;
+  }
+}
+.clientRow {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin: 10px 0 10px 0; font-size: 1.05rem;
+  >div:first-child { color: #353535; font-weight: 600;}
+  >div:last-child { font-size: 1.2rem; font-weight: 700; color: #353535;}
+}
+.detailsTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0 10px 0;
+  th, td { padding: 7px 10px; border: 1px solid #eee; }
+  th { background: #f6faff; font-size: 1.07rem; color: #0090d0; font-weight: 700; }
+  td { font-size: 1.06rem;}
+  tfoot td { background: #fcf9f3; font-size: 1.06rem;}
+}
+.bottomRow {
+  display: flex; gap: 28px; margin: 20px 0 4px 0; justify-content: space-between;
+  .bankDetails, .tncDetails { background: #f6faff; border-radius: 8px; padding: 14px 20px; flex: 1; min-width: 210px;}
+  .sectionTitle { font-size: 1.09rem; color: #1c7aaf; font-weight: 700; margin-bottom: 7px;}
+}
+.thankYou {
+  text-align: left;
+  font-size: 2rem;
+  color: #1291d0;
+  font-weight: 700;
+  margin-top: 12px; margin-bottom: 2px;
+  letter-spacing: 0.02em;
+}
+.footerRow {
+  font-size: 1rem;
+  text-align: left;
+  color: #1c7aaf;
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  margin-top: 8px;
+  div {
+    margin-bottom: 2px;
+  }
+  b {
+    color: #0890a5;
+    font-weight: 700;
+  }
+}

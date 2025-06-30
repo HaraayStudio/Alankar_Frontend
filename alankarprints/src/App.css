@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Space+Grotesk:wght@300..700&display=swap');
+@import "./assets/fonts/fonts.scss";
+
+.root{
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+    font-family: 'Arial';
+}
+
+a {
+  text-decoration: none;
+  color: inherit; /* Inherits color from parent */
+  cursor: pointer;
+  /* You can add more styles as needed */
+}
+
+
+body{
+       font-family: 'Arial';
+}
+button{
+    border: none;
+    padding: 10px 14px;
+justify-content: center;
+align-items: center;
+}
